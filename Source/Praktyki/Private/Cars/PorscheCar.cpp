@@ -5,7 +5,10 @@
 
 APorscheCar::APorscheCar()
 {
-	CarSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CarSkeletalMesh"));
+	CarSkeletalMesh = GetMesh(); //CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CarSkeletalMesh"));
+	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
+	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
+	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
 	SetRootComponent(CarSkeletalMesh);
 
 	MainBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainBody"));
@@ -54,7 +57,10 @@ APorscheCar::APorscheCar()
 	Wiper->SetupAttachment(CarSkeletalMesh);
 
 	FrontWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelRight"));
-	FrontWheelRight->SetupAttachment(CarSkeletalMesh);
+	FrontWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_right_spin"));
+	FrontWheelRight->SetRelativeLocation(FVector::ZeroVector);
+	FrontWheelRight->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
+	FrontWheelRight->SetRelativeScale3D(FVector(1.0f));
 
 	FrontWheelLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelLeft"));
 	FrontWheelLeft->SetupAttachment(CarSkeletalMesh);
@@ -73,9 +79,17 @@ APorscheCar::APorscheCar()
 
 	FrontBrakeDiscRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontBrakeDiscRight"));
 	FrontBrakeDiscRight->SetupAttachment(CarSkeletalMesh);
+	FrontBrakeDiscRight->SetupAttachment(CarSkeletalMesh, TEXT("suspension_front_right"));
+	FrontBrakeDiscRight->SetRelativeLocation(FVector::ZeroVector);
+	FrontBrakeDiscRight->SetRelativeRotation(FRotator::ZeroRotator);
+	FrontBrakeDiscRight->SetRelativeScale3D(FVector(1.0f));
 
 	FrontBrakeDiscLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontBrakeDiscLeft"));
 	FrontBrakeDiscLeft->SetupAttachment(CarSkeletalMesh);
+	FrontBrakeDiscLeft->SetupAttachment(CarSkeletalMesh, TEXT("suspension_front_left"));
+	FrontBrakeDiscLeft->SetRelativeLocation(FVector::ZeroVector);
+	FrontBrakeDiscLeft->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
+	FrontBrakeDiscLeft->SetRelativeScale3D(FVector(1.0f));
 
 	RearBrakeDiscRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearBrakeDiscRight"));
 	RearBrakeDiscRight->SetupAttachment(CarSkeletalMesh);
