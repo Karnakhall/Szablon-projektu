@@ -30,20 +30,20 @@ protected:
 	/*
 	*	Components
 	*/
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Skeletal")
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Skeletal")
 	USkeletalMeshComponent* CarSkeletalMesh;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
 	UStaticMeshComponent* CarBody;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
 	UStaticMeshComponent* DoorLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
 	UStaticMeshComponent* DoorRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
 	UStaticMeshComponent* Window;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")

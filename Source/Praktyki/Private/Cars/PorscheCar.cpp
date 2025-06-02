@@ -6,12 +6,13 @@
 
 APorscheCar::APorscheCar()
 {
+	
 	CarSkeletalMesh = GetMesh(); //CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CarSkeletalMesh"));
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
 	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
 	SetRootComponent(CarSkeletalMesh);
-
+	
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
 	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("CarBody"));
 	CarBody->SetRelativeLocation(FVector::ZeroVector);
