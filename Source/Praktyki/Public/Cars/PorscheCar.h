@@ -31,19 +31,19 @@ protected:
 	*	Components
 	*/
 	
-	UPROPERTY(EditAnywhere, Category = "Skeletal")
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	USkeletalMeshComponent* CarSkeletalMesh;
 	
-	UPROPERTY(EditAnywhere, Category = "Body")
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* CarBody;
 
-	UPROPERTY(EditAnywhere, Category = "Body")
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* DoorLeft;
 
-	UPROPERTY(EditAnywhere, Category = "Body")
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* DoorRight;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* Window;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Car|Body")
