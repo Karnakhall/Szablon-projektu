@@ -5,9 +5,11 @@
 
 #include "CoreMinimal.h"
 #include "WheeledVehiclePawn.h"
-#include "ChaosVehicleMovementComponent.h"
 #include "PorscheCar.generated.h"
 
+
+class UStaticMeshComponent;
+class UChaosVehicleMovementComponent;
 /**
  * 
  */
@@ -29,118 +31,127 @@ protected:
 	*	Components
 	*/
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Skeletal")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Skeletal")
 	USkeletalMeshComponent* CarSkeletalMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
-	UStaticMeshComponent* MainBody;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	UStaticMeshComponent* CarBody;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* DoorLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* DoorRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* Window;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* FenderLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* FenderRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* FrontBumper;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* FrontHood;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* RearBoot;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* RearBumper;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* RearSpoiler;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* RearDiffuser;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* WingMirrorLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* WingMirrorRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Body")
 	UStaticMeshComponent* Wiper;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
 	UStaticMeshComponent* FrontWheelRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
 	UStaticMeshComponent* FrontWheelLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
-	UStaticMeshComponent* FrontWheelBlur;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
+	UStaticMeshComponent* FrontWheelRightBlur;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
+	UStaticMeshComponent* FrontWheelLeftBlur;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
+	UStaticMeshComponent* RearWheelRightBlur;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
+	UStaticMeshComponent* RearWheelLeftBlur;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
 	UStaticMeshComponent* RearWheelBlur;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
 	UStaticMeshComponent* RearWheelRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Wheels")
 	UStaticMeshComponent* RearWheelLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* FrontBrakeDiscRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* FrontBrakeDiscLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* RearBrakeDiscRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* RearBrakeDiscLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* FrontCaliperRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* FrontCaliperLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* RearCaliperRight;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Body")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Brakes")
 	UStaticMeshComponent* RearCaliperLeft;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* Interior;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* CockpitConsole;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* Net;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* PedalAcceleration;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* PedalBrake;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* SeatNetClamps;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* SteeringWheel;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interior")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* EngineComponents;
 };
 
