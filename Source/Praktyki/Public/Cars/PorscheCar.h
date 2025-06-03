@@ -31,11 +31,14 @@ protected:
 	*	Components
 	*/
 	
-	UPROPERTY(EditAnywhere, Category = "Car|Body")
+	UPROPERTY(EditAnywhere, Category = "Car|Skeletal")
 	USkeletalMeshComponent* CarSkeletalMesh;
 	
 	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* CarBody;
+
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
+	int32 VisibleAnywhere;
 
 	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* DoorLeft;
@@ -43,13 +46,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* DoorRight;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* Window;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* FenderLeft;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Car|Body")
+	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* FenderRight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Car|Body")

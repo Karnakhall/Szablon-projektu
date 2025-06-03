@@ -7,18 +7,19 @@
 APorscheCar::APorscheCar()
 {
 	
-	CarSkeletalMesh = GetMesh();	//CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CarSkeletalMesh"));
+	CarSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("CarSkeletalMesh");
+	SetRootComponent(CarSkeletalMesh);
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
 	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
-	SetRootComponent(CarSkeletalMesh);
+	
 	
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
 	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("CarBody"));
 	CarBody->SetRelativeLocation(FVector::ZeroVector);
 	CarBody->SetRelativeRotation(FRotator::ZeroRotator);
 	CarBody->SetRelativeScale3D(FVector(1.0f));
-
+	
 	DoorLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorLeft"));
 	DoorLeft->SetupAttachment(CarSkeletalMesh, TEXT("door_left"));
 	DoorLeft->SetRelativeLocation(FVector::ZeroVector);
