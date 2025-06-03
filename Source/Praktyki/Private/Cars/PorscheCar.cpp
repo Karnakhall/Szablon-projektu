@@ -15,7 +15,7 @@ APorscheCar::APorscheCar()
 	
 	
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
-	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("CarBody"));
+	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("Body"));
 	CarBody->SetRelativeLocation(FVector::ZeroVector);
 	CarBody->SetRelativeRotation(FRotator::ZeroRotator);
 	CarBody->SetRelativeScale3D(FVector(1.0f));

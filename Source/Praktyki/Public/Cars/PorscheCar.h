@@ -9,6 +9,7 @@
 
 
 class UStaticMeshComponent;
+class USkeletalMeshComponent;
 class UChaosVehicleMovementComponent;
 /**
  * 
