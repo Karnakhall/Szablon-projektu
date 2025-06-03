@@ -7,15 +7,19 @@
 APorscheCar::APorscheCar()
 {
 	
-	CarSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("CarSkeletalMesh");
+	/*CarSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("CarSkeletalMesh");
 	SetRootComponent(CarSkeletalMesh);
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
 	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
-	
-	
+	*/
+	USkeletalMeshComponent* CarSkeletalMesh = GetMesh();
+	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
+	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
+	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
+
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
-	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("Body"));
+	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("SK_Porsche_911_Gt3_R1"));
 	CarBody->SetRelativeLocation(FVector::ZeroVector);
 	CarBody->SetRelativeRotation(FRotator::ZeroRotator);
 	CarBody->SetRelativeScale3D(FVector(1.0f));

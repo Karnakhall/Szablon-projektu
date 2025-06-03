@@ -32,9 +32,9 @@ protected:
 	*	Components
 	*/
 	
-	UPROPERTY(EditAnywhere, Category = "Car|Skeletal")
-	USkeletalMeshComponent* CarSkeletalMesh;
-	
+	//UPROPERTY(EditAnywhere, Category = "Car|Skeletal")
+	//USkeletalMeshComponent* CarSkeletalMesh;
+
 	UPROPERTY(EditAnywhere, Category = "Car|Body")
 	UStaticMeshComponent* CarBody;
 
