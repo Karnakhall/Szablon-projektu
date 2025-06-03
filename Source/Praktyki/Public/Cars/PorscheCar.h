@@ -13,7 +13,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
-class UChaosVehicleMovementComponent;
+class UChaosWheeledVehicleMovementComponent;
 struct FInputActionValue;
 
 /**
@@ -52,14 +52,14 @@ public:
 
 	// Cast to ChaosVehicle component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Movement")
-	TObjectPtr<UChaosVehicleMovementComponent> ChaosVehicleMovement;
+	TObjectPtr<UChaosWheeledVehicleMovementComponent> ChaosVehicleMovement;
 
 protected:
 	virtual void BeginPlay() override;
 
 	/*
 	*	Input Actions
-	*/
+	*
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* SteeringAction;
 

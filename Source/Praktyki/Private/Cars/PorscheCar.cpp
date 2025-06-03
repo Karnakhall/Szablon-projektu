@@ -5,20 +5,38 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystem.h"
-#include "InputActionValue.h"
-#include "ChaosVehicleMovementComponent.h"
+
+//#include "Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
+//#include "EnhancedInputSubsystem.h"
+//#include "InputActionValue.h"
+#include "ChaosWheeledVehicleMovementComponent.h"
 
 APorscheCar::APorscheCar()
 {
-	// SpringArm
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	// Set SkeletalMesh
 	USkeletalMeshComponent* CarSkeletalMesh = GetMesh();
+	CarSkeletalMesh->SetSimulatePhysics(true);
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
 	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
+
+	// Set SpringArm and Camera
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+	SpringArm->SetupAttachment(CarSkeletalMesh);
+	SpringArm->TargetArmLength = 650.0f;
+	SpringArm->SocketOffset.Z = 150.0f;
+	SpringArm->bDoCollisionTest = false;
+	SpringArm->bInheritPitch = false;
+	SpringArm->bInheritRoll = false;
+	SpringArm->bEnableCameraRotationLag = true;
+	SpringArm->CameraRotationLagSpeed = 2.0f;
+	SpringArm->CameraLagMaxDistance = 50.0f;
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
+
+	// Get Chaos Wheeled Movement component
+	ChaosVehicleMovement = CastChecked<UChaosWheeledVehicleMovementComponent>(GetVehicleMovement());
 
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
 	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("SK_Porsche_911_Gt3_R1"));
@@ -237,8 +255,9 @@ APorscheCar::APorscheCar()
 	EngineComponents->SetupAttachment(CarSkeletalMesh);
 }
 
-void APorscheCar::SetupPlayerInputComponent(UInputComponent* InputComponent)
+void APorscheCar::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 void APorscheCar::BeginPlay()
@@ -251,4 +270,34 @@ void APorscheCar::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void APorscheCar::Steering(const FInputActionValue& Value)
+{
+}
 
+void APorscheCar::Forward(const FInputActionValue& Value)
+{
+}
+
+void APorscheCar::Brake(const FInputActionValue& Value)
+{
+}
+
+void APorscheCar::BrakeStart(const FInputActionValue& Value)
+{
+}
+
+void APorscheCar::BrakeStop(const FInputActionValue& Value)
+{
+}
+
+void APorscheCar::HandBrake(const FInputActionValue& Value)
+{
+}
+
+void APorscheCar::HandBrakeStart(const FInputActionValue& Value)
+{
+}
+
+void APorscheCar::HandBrakeStop(const FInputActionValue& Value)
+{
+}
