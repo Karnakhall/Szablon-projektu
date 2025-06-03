@@ -2,12 +2,19 @@
 
 
 #include "Cars/PorscheCar.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystem.h"
+#include "InputActionValue.h"
 #include "ChaosVehicleMovementComponent.h"
 
 APorscheCar::APorscheCar()
 {
-	// Spring Arm
-
+	// SpringArm
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+	// Set SkeletalMesh
 	USkeletalMeshComponent* CarSkeletalMesh = GetMesh();
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
