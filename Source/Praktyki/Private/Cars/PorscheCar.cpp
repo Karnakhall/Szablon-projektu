@@ -6,13 +6,8 @@
 
 APorscheCar::APorscheCar()
 {
-	
-	/*CarSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("CarSkeletalMesh");
-	SetRootComponent(CarSkeletalMesh);
-	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
-	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
-	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
-	*/
+	// Spring Arm
+
 	USkeletalMeshComponent* CarSkeletalMesh = GetMesh();
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
@@ -100,7 +95,10 @@ APorscheCar::APorscheCar()
 	WingMirrorRight->SetRelativeScale3D(FVector(1.0f));
 
 	Wiper = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wiper"));
-	Wiper->SetupAttachment(CarSkeletalMesh);	// Zmienić pozycje
+	Wiper->SetupAttachment(Window);	// Zmienić pozycje
+	Wiper->SetRelativeLocation(FVector::ZeroVector);
+	Wiper->SetRelativeRotation(FRotator::ZeroRotator);
+	Wiper->SetRelativeScale3D(FVector(1.0f));
 
 	FrontWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelRight")); //Trzeba zmienić pozycję
 	FrontWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_right_spin"));
@@ -208,19 +206,32 @@ APorscheCar::APorscheCar()
 	Net->SetupAttachment(CarSkeletalMesh);
 
 	PedalAcceleration = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedalAcceleration"));
-	PedalAcceleration->SetupAttachment(CarSkeletalMesh);	//zmienić pozycje
+	PedalAcceleration->SetupAttachment(CockpitConsole);	//zmienić pozycje
+	PedalAcceleration->SetRelativeLocation(FVector::ZeroVector);
+	PedalAcceleration->SetRelativeRotation(FRotator::ZeroRotator);
+	PedalAcceleration->SetRelativeScale3D(FVector(1.0f));
 
 	PedalBrake = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedalBrake"));
-	PedalBrake->SetupAttachment(CarSkeletalMesh);	//zmienić pozycje
+	PedalBrake->SetupAttachment(CockpitConsole);	//zmienić pozycje
+	PedalBrake->SetRelativeLocation(FVector::ZeroVector);
+	PedalBrake->SetRelativeRotation(FRotator::ZeroRotator);
+	PedalBrake->SetRelativeScale3D(FVector(1.0f));
 
 	SeatNetClamps = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SeatNetClamps"));
 	SeatNetClamps->SetupAttachment(CarSkeletalMesh);
 
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SteeringWheel"));
-	SteeringWheel->SetupAttachment(CarSkeletalMesh);	//zmiewnić pozycje
+	SteeringWheel->SetupAttachment(CockpitConsole);	//zmiewnić pozycje
+	SteeringWheel->SetRelativeLocation(FVector::ZeroVector);
+	SteeringWheel->SetRelativeRotation(FRotator::ZeroRotator);
+	SteeringWheel->SetRelativeScale3D(FVector(1.0f));
 
 	EngineComponents = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EngineComponents"));
 	EngineComponents->SetupAttachment(CarSkeletalMesh);
+}
+
+void APorscheCar::SetupPlayerInputComponent(UInputComponent* InputComponent)
+{
 }
 
 void APorscheCar::BeginPlay()
