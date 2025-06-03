@@ -120,7 +120,7 @@ APorscheCar::APorscheCar()
 	WingMirrorRight->SetRelativeScale3D(FVector(1.0f));
 
 	Wiper = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wiper"));
-	Wiper->SetupAttachment(Window);	// Zmienić pozycje
+	Wiper->SetupAttachment(CarBody, TEXT("WiperSocket"));	// Zmienić pozycje
 	Wiper->SetRelativeLocation(FVector::ZeroVector);
 	Wiper->SetRelativeRotation(FRotator::ZeroRotator);
 	Wiper->SetRelativeScale3D(FVector(1.0f));
@@ -230,23 +230,23 @@ APorscheCar::APorscheCar()
 	Net = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Net"));
 	Net->SetupAttachment(CarSkeletalMesh);
 
+	SeatNetClamps = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SeatNetClamps"));
+	SeatNetClamps->SetupAttachment(CarSkeletalMesh);
+
 	PedalAcceleration = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedalAcceleration"));
-	PedalAcceleration->SetupAttachment(CockpitConsole);	//zmienić pozycje
+	PedalAcceleration->SetupAttachment(SeatNetClamps, TEXT("PedalAccelerationSocket"));	//zmienić pozycje
 	PedalAcceleration->SetRelativeLocation(FVector::ZeroVector);
 	PedalAcceleration->SetRelativeRotation(FRotator::ZeroRotator);
 	PedalAcceleration->SetRelativeScale3D(FVector(1.0f));
 
 	PedalBrake = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedalBrake"));
-	PedalBrake->SetupAttachment(CockpitConsole);	//zmienić pozycje
+	PedalBrake->SetupAttachment(SeatNetClamps, TEXT("PedalBrakeSocket"));	//zmienić pozycje
 	PedalBrake->SetRelativeLocation(FVector::ZeroVector);
 	PedalBrake->SetRelativeRotation(FRotator::ZeroRotator);
 	PedalBrake->SetRelativeScale3D(FVector(1.0f));
 
-	SeatNetClamps = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SeatNetClamps"));
-	SeatNetClamps->SetupAttachment(CarSkeletalMesh);
-
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SteeringWheel"));
-	SteeringWheel->SetupAttachment(CockpitConsole);	//zmiewnić pozycje
+	SteeringWheel->SetupAttachment(CockpitConsole, TEXT("SteeringWheelSocket"));	//zmiewnić pozycje
 	SteeringWheel->SetRelativeLocation(FVector::ZeroVector);
 	SteeringWheel->SetRelativeRotation(FRotator::ZeroRotator);
 	SteeringWheel->SetRelativeScale3D(FVector(1.0f));
