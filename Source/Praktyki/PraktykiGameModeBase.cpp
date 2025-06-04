@@ -2,5 +2,9 @@
 
 
 #include "PraktykiGameModeBase.h"
+#include "PlayerController/PorschePlayerController.h"
 
-
+APraktykiGameModeBase::APraktykiGameModeBase()
+{
+	PlayerControllerClass = APorschePlayerController::StaticClass();
+}
