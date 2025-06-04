@@ -15,6 +15,7 @@ APorscheCar::APorscheCar()
 	// Set SkeletalMesh
 	USkeletalMeshComponent* CarSkeletalMesh = GetMesh();
 	CarSkeletalMesh->SetSimulatePhysics(true);
+	CarSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
 	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
@@ -37,6 +38,7 @@ APorscheCar::APorscheCar()
 
 	// Get Chaos Wheeled Movement component
 	ChaosVehicleMovement = CastChecked<UChaosWheeledVehicleMovementComponent>(GetVehicleMovement());
+	GetVehicleMovement()->SetUpdatedComponent(CarSkeletalMesh);
 
 
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
