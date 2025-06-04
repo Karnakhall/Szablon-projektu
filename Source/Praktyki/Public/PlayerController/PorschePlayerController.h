@@ -1,0 +1,56 @@
+// Copyright 2025 Teyon. All Rights Reserved.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/PlayerController.h"
+#include "PorschePlayerController.generated.h"
+
+
+class UInputMappingContext;
+class APorscheCar;
+class UVehiclesUI;
+
+/**
+ * 
+ */
+
+UCLASS()
+class PRAKTYKI_API APorschePlayerController : public APlayerController
+{
+	GENERATED_BODY()
+	
+protected:
+
+	// Input Mapping COntext
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputMappingContext* InputMappingContext;
+
+	/** If true, the optional steering wheel input mapping context will be registered 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	bool bUseSteeringWheelControls = false;*/
+
+	/** Optional Input Mapping Context to be used for steering wheel input.
+	 *  This is added alongside the default Input Mapping Context and does not block other forms of input.
+	 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (EditCondition = "bUseSteeringWheelControls"))
+	UInputMappingContext* SteeringWheelInputMappingContext; */
+
+	// Pointer to controlled vehicle
+	TObjectPtr<APorscheCar> PorscheVehiclePawn;
+
+	// Below will be UI for the car, maybe.
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+
+public:
+
+	virtual void Tick(float Delta) override;
+
+protected:
+
+	virtual void OnPossess(APawn* InPawn) override;
+
+};

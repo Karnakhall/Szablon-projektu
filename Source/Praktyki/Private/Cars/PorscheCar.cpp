@@ -6,7 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystem.h"
+#include "EnhancedInput/Public/EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
 
@@ -22,8 +22,8 @@ APorscheCar::APorscheCar()
 	// Set SpringArm and Camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(CarSkeletalMesh);
-	SpringArm->TargetArmLength = 650.0f;
-	SpringArm->SocketOffset.Z = 150.0f;
+	SpringArm->TargetArmLength = 750.0f;
+	SpringArm->SocketOffset.Z = 250.0f;
 	SpringArm->bDoCollisionTest = false;
 	SpringArm->bInheritPitch = false;
 	SpringArm->bInheritRoll = false;
@@ -33,9 +33,11 @@ APorscheCar::APorscheCar()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+	Camera->bAutoActivate = true;
 
 	// Get Chaos Wheeled Movement component
 	ChaosVehicleMovement = CastChecked<UChaosWheeledVehicleMovementComponent>(GetVehicleMovement());
+
 
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
 	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("SK_Porsche_911_Gt3_R1"));
@@ -257,6 +259,26 @@ APorscheCar::APorscheCar()
 void APorscheCar::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		// Steering
+		EnhancedInputComponent->BindAction(SteeringAction, ETriggerEvent::Triggered, this, &APorscheCar::Steering);
+		EnhancedInputComponent->BindAction(SteeringAction, ETriggerEvent::Completed, this, &APorscheCar::Steering);
+
+		// Acceleration
+		EnhancedInputComponent->BindAction(AccelerationAction, ETriggerEvent::Triggered, this, &APorscheCar::Acceleration);
+		EnhancedInputComponent->BindAction(AccelerationAction, ETriggerEvent::Completed, this, &APorscheCar::Acceleration);
+
+		// Brake
+		EnhancedInputComponent->BindAction(BrakeAction, ETriggerEvent::Triggered, this, &APorscheCar::Brake);
+		EnhancedInputComponent->BindAction(BrakeAction, ETriggerEvent::Started, this, &APorscheCar::BrakeStart);
+		EnhancedInputComponent->BindAction(BrakeAction, ETriggerEvent::Completed, this, &APorscheCar::BrakeStop);
+
+		// HandBrake
+		EnhancedInputComponent->BindAction(HandBrakeAction, ETriggerEvent::Started, this, &APorscheCar::HandBrakeStart);
+		EnhancedInputComponent->BindAction(HandBrakeAction, ETriggerEvent::Completed, this, &APorscheCar::HandBrakeStop);
+	}
 }
 
 void APorscheCar::BeginPlay()
@@ -267,36 +289,57 @@ void APorscheCar::BeginPlay()
 void APorscheCar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	// Angular damping
+	bool bMovingOnGround = ChaosVehicleMovement->IsMovingOnGround();
+	GetMesh()->SetAngularDamping(bMovingOnGround ? 0.0f : 3.0f);
 }
 
 void APorscheCar::Steering(const FInputActionValue& Value)
 {
+	// Input magnitude for steering
+	float SteeringValue = Value.Get<float>();
+
+	// Input
+	ChaosVehicleMovement->SetSteeringInput(SteeringValue);
 }
 
-void APorscheCar::Forward(const FInputActionValue& Value)
+void APorscheCar::Acceleration(const FInputActionValue& Value)
 {
+	// Input magnitude for the Acceleration
+	float AccelerationValue = Value.Get<float>();
+
+	// Input
+	ChaosVehicleMovement->SetThrottleInput(AccelerationValue);
 }
 
 void APorscheCar::Brake(const FInputActionValue& Value)
 {
+	// Input magnitude for the brakes
+	float BreakValue = Value.Get<float>();
+
+	// Input
+	ChaosVehicleMovement->SetBrakeInput(BreakValue);
 }
 
 void APorscheCar::BrakeStart(const FInputActionValue& Value)
 {
+
 }
 
 void APorscheCar::BrakeStop(const FInputActionValue& Value)
 {
-}
-
-void APorscheCar::HandBrake(const FInputActionValue& Value)
-{
+	// Reset input to zero
+	ChaosVehicleMovement->SetBrakeInput(0.0f);
 }
 
 void APorscheCar::HandBrakeStart(const FInputActionValue& Value)
 {
+	// Input
+	ChaosVehicleMovement->SetHandbrakeInput(true);
 }
 
 void APorscheCar::HandBrakeStop(const FInputActionValue& Value)
 {
+	// Input
+	ChaosVehicleMovement->SetHandbrakeInput(false);
 }

@@ -9,7 +9,6 @@
 
 
 class UStaticMeshComponent;
-class USkeletalMeshComponent;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
@@ -34,21 +33,26 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	/*
-	*	CameraComponents
-	*/
+	/** CameraComponents */
 
 	// Spring Arm
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* SpringArm;
 
 	// Camera
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
-	/*
-	*	CameraComponents Ends
+	/*// Second Spring Arm
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	USpringArmComponent* SecondSpringArm;
+
+	// Second Camera
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* SecondCamera;
 	*/
+
+	/** CameraComponents Ends */
 
 	// Cast to ChaosVehicle component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Movement")
@@ -59,12 +63,12 @@ protected:
 
 	/*
 	*	Input Actions
-	*
+	*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* SteeringAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* ForwardAction;
+	UInputAction* AccelerationAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* BrakeAction;
@@ -80,13 +84,12 @@ protected:
 	*/
 	void Steering(const FInputActionValue& Value);
 
-	void Forward(const FInputActionValue& Value);
+	void Acceleration(const FInputActionValue& Value);
 
 	void Brake(const FInputActionValue& Value);
 	void BrakeStart(const FInputActionValue& Value);
 	void BrakeStop(const FInputActionValue& Value);
 
-	void HandBrake(const FInputActionValue& Value);
 	void HandBrakeStart(const FInputActionValue& Value);
 	void HandBrakeStop(const FInputActionValue& Value);
 
