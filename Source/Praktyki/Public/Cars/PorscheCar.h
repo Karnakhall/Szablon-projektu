@@ -8,8 +8,8 @@
 #include "PorscheCar.generated.h"
 
 
-//class UStaticMeshComponent;
-//class USkeletalMeshComponent;
+class UStaticMeshComponent;
+class USkeletalMeshComponent;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;

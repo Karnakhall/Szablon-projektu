@@ -5,10 +5,9 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-
-//#include "Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
-//#include "EnhancedInputSubsystem.h"
-//#include "InputActionValue.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystem.h"
+#include "InputActionValue.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
 
 APorscheCar::APorscheCar()
