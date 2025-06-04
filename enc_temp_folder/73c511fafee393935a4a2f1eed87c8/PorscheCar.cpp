@@ -17,7 +17,6 @@ APorscheCar::APorscheCar()
 	CarSkeletalMesh->SetSimulatePhysics(true);
 	CarSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	CarSkeletalMesh->SetCollisionProfileName(TEXT("Vehicle"));
-	CarSkeletalMesh->BodyInstance.bSimulatePhysics = true;
 	CarSkeletalMesh->SetRelativeLocation(FVector::ZeroVector);
 	CarSkeletalMesh->SetRelativeRotation(FRotator::ZeroRotator);
 	CarSkeletalMesh->SetRelativeScale3D(FVector(1.0f));
