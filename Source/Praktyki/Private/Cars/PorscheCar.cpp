@@ -51,76 +51,76 @@ APorscheCar::APorscheCar()
 	CarBody->SetRelativeScale3D(FVector(1.0f));
 	
 	DoorLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorLeft"));
-	DoorLeft->SetupAttachment(CarSkeletalMesh, TEXT("door_left"));
+	DoorLeft->SetupAttachment(CarBody, TEXT("door_left"));
 	DoorLeft->SetRelativeLocation(FVector::ZeroVector);
 	DoorLeft->SetRelativeRotation(FRotator::ZeroRotator);
 	DoorLeft->SetRelativeScale3D(FVector(1.0f));
 
 	DoorRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorRight"));
-	DoorRight->SetupAttachment(CarSkeletalMesh, TEXT("door_right"));
+	DoorRight->SetupAttachment(CarBody, TEXT("door_right"));
 	DoorRight->SetRelativeLocation(FVector::ZeroVector);
 	DoorRight->SetRelativeRotation(FRotator::ZeroRotator);
 	DoorRight->SetRelativeScale3D(FVector(1.0f));
 	
 	Window = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Window"));
-	Window->SetupAttachment(CarSkeletalMesh);
+	Window->SetupAttachment(CarBody);
 
 	FenderLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FenderLeft"));
-	FenderLeft->SetupAttachment(CarSkeletalMesh, TEXT("fender_left"));
+	FenderLeft->SetupAttachment(CarBody, TEXT("fender_left"));
 	FenderLeft->SetRelativeLocation(FVector::ZeroVector);
 	FenderLeft->SetRelativeRotation(FRotator::ZeroRotator);
 	FenderLeft->SetRelativeScale3D(FVector(1.0f));
 
 	FenderRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FenderRight"));
-	FenderRight->SetupAttachment(CarSkeletalMesh, TEXT("fender_right"));
+	FenderRight->SetupAttachment(CarBody, TEXT("fender_right"));
 	FenderRight->SetRelativeLocation(FVector::ZeroVector);
 	FenderRight->SetRelativeRotation(FRotator::ZeroRotator);
 	FenderRight->SetRelativeScale3D(FVector(1.0f));
 
 	FrontBumper = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontBumper"));
-	FrontBumper->SetupAttachment(CarSkeletalMesh, TEXT("bumper_front"));
+	FrontBumper->SetupAttachment(CarBody, TEXT("bumper_front"));
 	FrontBumper->SetRelativeLocation(FVector::ZeroVector);
 	FrontBumper->SetRelativeRotation(FRotator::ZeroRotator);
 	FrontBumper->SetRelativeScale3D(FVector(1.0f));
 
 	FrontHood = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontHood"));
-	FrontHood->SetupAttachment(CarSkeletalMesh, TEXT("hood_front"));
+	FrontHood->SetupAttachment(CarBody, TEXT("hood_front"));
 	FrontHood->SetRelativeLocation(FVector::ZeroVector);
 	FrontHood->SetRelativeRotation(FRotator::ZeroRotator);
 	FrontHood->SetRelativeScale3D(FVector(1.0f));
 
 	RearBoot = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearBoot"));
-	RearBoot->SetupAttachment(CarSkeletalMesh, TEXT("boot_rear"));
+	RearBoot->SetupAttachment(CarBody, TEXT("boot_rear"));
 	RearBoot->SetRelativeLocation(FVector::ZeroVector);
 	RearBoot->SetRelativeRotation(FRotator::ZeroRotator);
 	RearBoot->SetRelativeScale3D(FVector(1.0f));
 
 	RearBumper = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearBumper"));
-	RearBumper->SetupAttachment(CarSkeletalMesh, TEXT("bumper_rear"));
+	RearBumper->SetupAttachment(CarBody, TEXT("bumper_rear"));
 	RearBumper->SetRelativeLocation(FVector::ZeroVector);
 	RearBumper->SetRelativeRotation(FRotator::ZeroRotator);
 	RearBumper->SetRelativeScale3D(FVector(1.0f));
 
 	RearSpoiler = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearSpoiler"));
-	RearSpoiler->SetupAttachment(CarSkeletalMesh, TEXT("spoiler_back"));
+	RearSpoiler->SetupAttachment(CarBody, TEXT("spoiler_back"));
 	RearSpoiler->SetRelativeLocation(FVector::ZeroVector);
 	RearSpoiler->SetRelativeRotation(FRotator::ZeroRotator);
 	RearSpoiler->SetRelativeScale3D(FVector(1.0f));
 
 	RearDiffuser = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearDiffuser"));
-	RearDiffuser->SetupAttachment(CarSkeletalMesh, TEXT("diffuser_back"));
+	RearDiffuser->SetupAttachment(CarBody, TEXT("diffuser_back"));
 	RearDiffuser->SetRelativeLocation(FVector::ZeroVector);
 	RearDiffuser->SetRelativeRotation(FRotator::ZeroRotator);
 	RearDiffuser->SetRelativeScale3D(FVector(1.0f));
 
 	WingMirrorLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WingMirrorLeft"));
-	WingMirrorLeft->SetupAttachment(CarSkeletalMesh, TEXT("wing_mirror_left"));
+	WingMirrorLeft->SetupAttachment(CarBody, TEXT("wing_mirror_left"));
 	WingMirrorLeft->SetRelativeLocation(FVector::ZeroVector);
 	WingMirrorLeft->SetRelativeRotation(FRotator::ZeroRotator);
 	WingMirrorLeft->SetRelativeScale3D(FVector(1.0f));
 
 	WingMirrorRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WingMirrorRight"));
-	WingMirrorRight->SetupAttachment(CarSkeletalMesh, TEXT("wing_mirror_right"));
+	WingMirrorRight->SetupAttachment(CarBody, TEXT("wing_mirror_right"));
 	WingMirrorRight->SetRelativeLocation(FVector::ZeroVector);
 	WingMirrorRight->SetRelativeRotation(FRotator::ZeroRotator);
 	WingMirrorRight->SetRelativeScale3D(FVector(1.0f));
@@ -132,55 +132,55 @@ APorscheCar::APorscheCar()
 	Wiper->SetRelativeScale3D(FVector(1.0f));
 
 	FrontWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelRight")); 
-	FrontWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_right_spin")); //zmienić socket i w innych kołach też
+	FrontWheelRight->SetupAttachment(CarBody, TEXT("wheel_front_right_spin")); //zmienić socket i w innych kołach też
 	FrontWheelRight->SetRelativeLocation(FVector::ZeroVector);
 	FrontWheelRight->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
 	FrontWheelRight->SetRelativeScale3D(FVector(1.0f));
 
 	FrontWheelLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelLeft"));
-	FrontWheelLeft->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_left_spin"));
+	FrontWheelLeft->SetupAttachment(CarBody, TEXT("wheel_front_left_spin"));
 	FrontWheelLeft->SetRelativeLocation(FVector::ZeroVector);
 	FrontWheelLeft->SetRelativeRotation(FRotator::ZeroRotator);
 	FrontWheelLeft->SetRelativeScale3D(FVector(1.0f));
 
 	FrontWheelRightBlur = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelRightBlur"));
-	FrontWheelRightBlur->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_right_spin"));
+	FrontWheelRightBlur->SetupAttachment(CarBody, TEXT("wheel_front_right_spin"));
 	FrontWheelRightBlur->SetRelativeLocation(FVector::ZeroVector);
 	FrontWheelRightBlur->SetRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	FrontWheelRightBlur->SetRelativeScale3D(FVector(1.0f));
 
 	FrontWheelLeftBlur = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelLeftBlur"));
-	FrontWheelLeftBlur->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_left_spin"));
+	FrontWheelLeftBlur->SetupAttachment(CarBody, TEXT("wheel_front_left_spin"));
 	FrontWheelLeftBlur->SetRelativeLocation(FVector::ZeroVector);
 	FrontWheelLeftBlur->SetRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	FrontWheelLeftBlur->SetRelativeScale3D(FVector(1.0f));
 
 	RearWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearWheelRight"));
-	RearWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("wheel_back_right_spin"));
+	RearWheelRight->SetupAttachment(CarBody, TEXT("wheel_back_right_spin"));
 	RearWheelRight->SetRelativeLocation(FVector::ZeroVector);
 	RearWheelRight->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
 	RearWheelRight->SetRelativeScale3D(FVector(1.0f));
 
 	RearWheelRightBlur = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearWheelRightBlur"));
-	RearWheelRightBlur->SetupAttachment(CarSkeletalMesh, TEXT("wheel_back_right_spin"));
+	RearWheelRightBlur->SetupAttachment(CarBody, TEXT("wheel_back_right_spin"));
 	RearWheelRightBlur->SetRelativeLocation(FVector::ZeroVector);
 	RearWheelRightBlur->SetRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	RearWheelRightBlur->SetRelativeScale3D(FVector(1.0f));
 
 	RearWheelLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearWheelLeft"));
-	RearWheelLeft->SetupAttachment(CarSkeletalMesh, TEXT("wheel_back_left_spin"));
+	RearWheelLeft->SetupAttachment(CarBody, TEXT("wheel_back_left_spin"));
 	RearWheelLeft->SetRelativeLocation(FVector::ZeroVector);
 	RearWheelLeft->SetRelativeRotation(FRotator::ZeroRotator);
 	RearWheelLeft->SetRelativeScale3D(FVector(1.0f));
 
 	RearWheelLeftBlur = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearWheelLeftBlur"));
-	RearWheelLeftBlur->SetupAttachment(CarSkeletalMesh, TEXT("wheel_back_left_spin"));
+	RearWheelLeftBlur->SetupAttachment(CarBody, TEXT("wheel_back_left_spin"));
 	RearWheelLeftBlur->SetRelativeLocation(FVector::ZeroVector);
 	RearWheelLeftBlur->SetRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	RearWheelLeftBlur->SetRelativeScale3D(FVector(1.0f));
 
 	FrontBrakeDiscRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontBrakeDiscRight"));
-	FrontBrakeDiscRight->SetupAttachment(CarSkeletalMesh, TEXT("suspension_front_right"));
+	FrontBrakeDiscRight->SetupAttachment(CarBody, TEXT("suspension_front_right"));
 	FrontBrakeDiscRight->SetRelativeLocation(FVector::ZeroVector);
 	FrontBrakeDiscRight->SetRelativeRotation(FRotator::ZeroRotator);
 	FrontBrakeDiscRight->SetRelativeScale3D(FVector(1.0f));
@@ -192,7 +192,7 @@ APorscheCar::APorscheCar()
 	FrontCaliperRight->SetRelativeScale3D(FVector(1.0f));
 
 	FrontBrakeDiscLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontBrakeDiscLeft"));
-	FrontBrakeDiscLeft->SetupAttachment(CarSkeletalMesh, TEXT("suspension_front_left"));
+	FrontBrakeDiscLeft->SetupAttachment(CarBody, TEXT("suspension_front_left"));
 	FrontBrakeDiscLeft->SetRelativeLocation(FVector::ZeroVector);
 	FrontBrakeDiscLeft->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
 	FrontBrakeDiscLeft->SetRelativeScale3D(FVector(1.0f));
@@ -204,7 +204,7 @@ APorscheCar::APorscheCar()
 	FrontCaliperLeft->SetRelativeScale3D(FVector(1.0f));
 
 	RearBrakeDiscRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearBrakeDiscRight"));
-	RearBrakeDiscRight->SetupAttachment(CarSkeletalMesh, TEXT("suspension_back_right"));
+	RearBrakeDiscRight->SetupAttachment(CarBody, TEXT("suspension_back_right"));
 	RearBrakeDiscRight->SetRelativeLocation(FVector::ZeroVector);
 	RearBrakeDiscRight->SetRelativeRotation(FRotator::ZeroRotator);
 	RearBrakeDiscRight->SetRelativeScale3D(FVector(1.0f));
@@ -216,7 +216,7 @@ APorscheCar::APorscheCar()
 	RearCaliperRight->SetRelativeScale3D(FVector(1.0f));
 
 	RearBrakeDiscLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearBrakeDiscLeft"));
-	RearBrakeDiscLeft->SetupAttachment(CarSkeletalMesh, TEXT("suspension_back_left"));
+	RearBrakeDiscLeft->SetupAttachment(CarBody, TEXT("suspension_back_left"));
 	RearBrakeDiscLeft->SetRelativeLocation(FVector::ZeroVector);
 	RearBrakeDiscLeft->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
 	RearBrakeDiscLeft->SetRelativeScale3D(FVector(1.0f));
@@ -228,16 +228,16 @@ APorscheCar::APorscheCar()
 	RearCaliperLeft->SetRelativeScale3D(FVector(1.0f));
 
 	Interior = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Interior"));
-	Interior->SetupAttachment(CarSkeletalMesh);
+	Interior->SetupAttachment(CarBody);
 
 	CockpitConsole = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CockpitConsole"));
-	CockpitConsole->SetupAttachment(CarSkeletalMesh);
+	CockpitConsole->SetupAttachment(CarBody);
 
 	Net = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Net"));
-	Net->SetupAttachment(CarSkeletalMesh);
+	Net->SetupAttachment(CarBody);
 
 	SeatNetClamps = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SeatNetClamps"));
-	SeatNetClamps->SetupAttachment(CarSkeletalMesh);
+	SeatNetClamps->SetupAttachment(CarBody);
 
 	PedalAcceleration = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedalAcceleration"));
 	PedalAcceleration->SetupAttachment(SeatNetClamps, TEXT("PedalAccelerationSocket"));	//zmienić pozycje
@@ -258,7 +258,7 @@ APorscheCar::APorscheCar()
 	SteeringWheel->SetRelativeScale3D(FVector(1.0f));
 
 	EngineComponents = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EngineComponents"));
-	EngineComponents->SetupAttachment(CarSkeletalMesh);
+	EngineComponents->SetupAttachment(CarBody);
 
 	// Note: for faster iteration times, the vehicle setup can be tweaked in the Blueprint instead
 
