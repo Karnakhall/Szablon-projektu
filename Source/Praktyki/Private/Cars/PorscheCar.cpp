@@ -44,32 +44,6 @@ APorscheCar::APorscheCar()
 	ChaosVehicleMovement = CastChecked<UChaosWheeledVehicleMovementComponent>(GetVehicleMovement());
 	GetVehicleMovement()->SetUpdatedComponent(CarSkeletalMesh);
 
-	// Note: for faster iteration times, the vehicle setup can be tweaked in the Blueprint instead
-
-	// Set up the chassis
-	GetChaosVehicleMovement()->ChassisHeight = 144.0f;
-	GetChaosVehicleMovement()->DragCoefficient = 0.31f;
-
-	//Set up wheels
-	GetChaosVehicleMovement()->bLegacyWheelFrictionPosition = true;
-	GetChaosVehicleMovement()->WheelSetups.SetNum(4);
-
-	GetChaosVehicleMovement()->WheelSetups[0].WheelClass = UPorscheWheelFront::StaticClass();
-	GetChaosVehicleMovement()->WheelSetups[0].BoneName = FName("wheel_front_left_spin");
-	GetChaosVehicleMovement()->WheelSetups[0].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
-
-	GetChaosVehicleMovement()->WheelSetups[1].WheelClass = UPorscheWheelFront::StaticClass();
-	GetChaosVehicleMovement()->WheelSetups[1].BoneName = FName("wheel_front_right_spin");
-	GetChaosVehicleMovement()->WheelSetups[1].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
-
-	GetChaosVehicleMovement()->WheelSetups[2].WheelClass = UPorscheWheelRear::StaticClass();
-	GetChaosVehicleMovement()->WheelSetups[2].BoneName = FName("wheel_back_left_spin");
-	GetChaosVehicleMovement()->WheelSetups[2].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
-
-	GetChaosVehicleMovement()->WheelSetups[3].WheelClass = UPorscheWheelRear::StaticClass();
-	GetChaosVehicleMovement()->WheelSetups[3].BoneName = FName("wheel_back_right_spin");
-	GetChaosVehicleMovement()->WheelSetups[3].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
-
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
 	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("SK_Porsche_911_Gt3_R1"));
 	CarBody->SetRelativeLocation(FVector::ZeroVector);
@@ -285,6 +259,32 @@ APorscheCar::APorscheCar()
 
 	EngineComponents = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EngineComponents"));
 	EngineComponents->SetupAttachment(CarSkeletalMesh);
+
+	// Note: for faster iteration times, the vehicle setup can be tweaked in the Blueprint instead
+
+	// Set up the chassis
+	GetChaosVehicleMovement()->ChassisHeight = 144.0f;
+	GetChaosVehicleMovement()->DragCoefficient = 0.31f;
+
+	//Set up wheels
+	GetChaosVehicleMovement()->bLegacyWheelFrictionPosition = true;
+	GetChaosVehicleMovement()->WheelSetups.SetNum(4);
+
+	GetChaosVehicleMovement()->WheelSetups[0].WheelClass = UPorscheWheelFront::StaticClass();
+	GetChaosVehicleMovement()->WheelSetups[0].BoneName = FName("wheel_front_left_spin");
+	GetChaosVehicleMovement()->WheelSetups[0].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
+
+	GetChaosVehicleMovement()->WheelSetups[1].WheelClass = UPorscheWheelFront::StaticClass();
+	GetChaosVehicleMovement()->WheelSetups[1].BoneName = FName("wheel_front_right_spin");
+	GetChaosVehicleMovement()->WheelSetups[1].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
+
+	GetChaosVehicleMovement()->WheelSetups[2].WheelClass = UPorscheWheelRear::StaticClass();
+	GetChaosVehicleMovement()->WheelSetups[2].BoneName = FName("wheel_back_left_spin");
+	GetChaosVehicleMovement()->WheelSetups[2].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
+
+	GetChaosVehicleMovement()->WheelSetups[3].WheelClass = UPorscheWheelRear::StaticClass();
+	GetChaosVehicleMovement()->WheelSetups[3].BoneName = FName("wheel_back_right_spin");
+	GetChaosVehicleMovement()->WheelSetups[3].AdditionalOffset = FVector(0.0f, 0.0f, 0.0f);
 
 	// Set up the engine
 	// NOTE: Check the Blueprint asset for the Torque Curve
