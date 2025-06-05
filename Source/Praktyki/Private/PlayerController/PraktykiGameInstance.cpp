@@ -12,5 +12,7 @@ UPraktykiGameInstance::UPraktykiGameInstance()
 
 void UPraktykiGameInstance::Init()
 {
+	Super::Init();
+
 	UE_LOG(LogTemp, Log, TEXT("PraktykiGameInstance Initialized!"));
 }
