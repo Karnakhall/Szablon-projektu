@@ -47,7 +47,7 @@ APorscheCar::APorscheCar()
 	GetVehicleMovement()->SetUpdatedComponent(CarSkeletalMesh);
 
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
-	CarBody->SetupAttachment(CarSkeletalMesh);		//, TEXT("SK_Porsche_911_Gt3_R1")
+	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("Body"));		//, TEXT("SK_Porsche_911_Gt3_R1")
 	CarBody->SetRelativeLocation(FVector::ZeroVector);
 	CarBody->SetRelativeRotation(FRotator::ZeroRotator);
 	CarBody->SetRelativeScale3D(FVector(1.0f));
@@ -179,7 +179,7 @@ APorscheCar::APorscheCar()
 	RearWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RearWheelRight"));
 	RearWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("suspension_back_right"));
 	//RearWheelRight->SetRelativeLocation(FVector::ZeroVector);
-	//RearWheelRight->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
+	RearWheelRight->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
 	//RearWheelRight->SetRelativeScale3D(FVector(1.0f));
 	RearWheelRight->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
