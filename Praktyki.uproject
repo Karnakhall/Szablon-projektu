@@ -14,6 +14,7 @@
 			]
 		}
 	],
+	"GameInstanceClass": "/Script/Praktyki.RaceGameInstance",
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
