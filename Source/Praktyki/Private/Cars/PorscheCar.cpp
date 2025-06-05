@@ -131,8 +131,8 @@ APorscheCar::APorscheCar()
 	Wiper->SetRelativeRotation(FRotator::ZeroRotator);
 	Wiper->SetRelativeScale3D(FVector(1.0f));
 
-	FrontWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelRight")); //Trzeba zmienić pozycję
-	FrontWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_right_spin"));
+	FrontWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelRight")); 
+	FrontWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("wheel_front_right_spin")); //zmienić socket i w innych kołach też
 	FrontWheelRight->SetRelativeLocation(FVector::ZeroVector);
 	FrontWheelRight->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
 	FrontWheelRight->SetRelativeScale3D(FVector(1.0f));
