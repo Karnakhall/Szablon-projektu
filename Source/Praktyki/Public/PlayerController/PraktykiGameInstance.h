@@ -11,7 +11,7 @@ UENUM(BlueprintType)
 enum class ERaceMode : uint8
 {
 	RM_None UMETA(DisplayName = "None"),
-	RM_Training UMETA(DisplayName = "Trening"),
+	RM_Training UMETA(DisplayName = "Training"),
 	RM_Race	 UMETA(DisplayName = "Wyścig")
 };
 
@@ -25,6 +25,8 @@ class PRAKTYKI_API UPraktykiGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 public:
+	UPraktykiGameInstance();
+
 	UPROPERTY(BlueprintReadWrite, Category = "RaceSettings")
 	ERaceMode SelectedRaceMode;		// Selected race mode
 
@@ -33,8 +35,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "RaceSettings")
 	float MaxRaceTime;	// Max time for game
-
-	UPraktykiGameInstance();
 
 	// Initialization function, called after Game Instance is created
 	virtual void Init() override;

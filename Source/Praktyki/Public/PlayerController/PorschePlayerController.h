@@ -10,6 +10,7 @@
 class UInputMappingContext;
 class APorscheCar;
 class UVehiclesUI;
+class UUserWidget;
 
 /**
  * 
@@ -47,10 +48,25 @@ protected:
 
 public:
 
+	// Function for showing main menu
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void ShowMenu();
+
+	// Function for hiding main menu
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void HideMenu();
+
 	virtual void Tick(float Delta) override;
 
 protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	// Blueprint main menu class   
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> MainMenuWidget;
+
+	// Instance of widget menu
+	UPROPERTY()
+	UUserWidget* WidgetInstance;
 };

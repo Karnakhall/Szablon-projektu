@@ -5,10 +5,16 @@
 #include "Cars/PorscheCar.h"
 #include "EnhancedInputSubsystems.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
+#include "Blueprint/UserWidget.h"
 
 void APorschePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (GetWorld()->GetMapName().Contains(TEXT("TestMap")))
+	{
+		ShowMenu();
+	}
 }
 
 void APorschePlayerController::SetupInputComponent()
@@ -27,6 +33,39 @@ void APorschePlayerController::SetupInputComponent()
 			Subsystem->AddMappingContext(SteeringWheelInputMappingContext, 1);
 		}*/
 	}
+}
+
+void APorschePlayerController::ShowMenu()
+{
+	// Check if we have the Widget Blueprint class assigned
+	if (MainMenuWidget)
+	{
+		WidgetInstance = CreateWidget<UUserWidget>(this, MainMenuWidget);
+		if (WidgetInstance)
+		{
+			WidgetInstance->AddToViewport();
+
+			SetInputMode(FInputModeUIOnly());
+			bShowMouseCursor = true;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("MainMenuWidget is not set in PorschePlayerController Blueprint"));
+	}
+}
+
+void APorschePlayerController::HideMenu()
+{
+	if (MainMenuWidget)
+	{
+		WidgetInstance->RemoveFromParent();
+		WidgetInstance = nullptr;
+	}
+
+	// Set up input on game and hide mouse coursor
+	SetInputMode(FInputModeGameOnly());
+	bShowMouseCursor = false;
 }
 
 void APorschePlayerController::Tick(float Delta)

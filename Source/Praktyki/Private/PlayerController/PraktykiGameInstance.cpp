@@ -5,7 +5,7 @@
 
 UPraktykiGameInstance::UPraktykiGameInstance()
 {
-	SelectedRaceMode = ERaceMode::RM_Training;
+	SelectedRaceMode = ERaceMode::RM_Training;		// 
 	NumberOfLaps = 3.f;
 	MaxRaceTime = 360.f;
 }
