@@ -40,6 +40,12 @@ void APorschePlayerController::ShowMenu()
 	// Check if we have the Widget Blueprint class assigned
 	if (MainMenuWidget)
 	{
+		if (WidgetInstance)
+		{
+			WidgetInstance->RemoveFromParent();
+			WidgetInstance = nullptr;
+		}
+
 		WidgetInstance = CreateWidget<UUserWidget>(this, MainMenuWidget);
 		if (WidgetInstance)
 		{
@@ -57,7 +63,7 @@ void APorschePlayerController::ShowMenu()
 
 void APorschePlayerController::HideMenu()
 {
-	if (MainMenuWidget)
+	if (WidgetInstance)
 	{
 		WidgetInstance->RemoveFromParent();
 		WidgetInstance = nullptr;
