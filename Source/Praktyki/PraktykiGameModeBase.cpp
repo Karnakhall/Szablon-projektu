@@ -13,7 +13,7 @@ APraktykiGameModeBase::APraktykiGameModeBase()
 {
 	DefaultPawnClass = APorscheCar::StaticClass();
 	PlayerControllerClass = APorschePlayerController::StaticClass();
-    //HUDClass = UPorscheUI::StaticClass();
+    HUDClass = UPorscheUI::StaticClass();
 }
 
 void APraktykiGameModeBase::BeginPlay()
@@ -39,7 +39,9 @@ void APraktykiGameModeBase::BeginPlay()
         {
            
             TargetLaps = GameInstance->NumberOfLaps;     // Wyścig liczba okrążeń z menu
-            TargetMaxRaceTime = 0.0f;   // Wyścig brak limitu czasowego. Czas będzie mierzony, ale nie będzie kończył gry.
+            TargetMaxRaceTime = 0.0f;   // Wyścig brak limitu czasowego 
+
+            // Czas będzie mierzony, ale nie będzie kończył gry.
             UE_LOG(LogTemp, Log, TEXT("Game Mode: Race. Target Laps: %d, Time will be measured, but no time limit."), TargetLaps);
         }
         else
@@ -59,6 +61,11 @@ void APraktykiGameModeBase::BeginPlay()
         TargetMaxRaceTime = 0.0f;
         CurrentRaceModeType = ERaceMode::RM_Training;
     }
+
+    // WAŻNE: W zależności od Twojego Setupu, StartGame() może być wywołane tutaj,
+    // jeśli gra ma się zaczynać od razu po załadowaniu poziomu.
+    // Jeśli używasz ekranu ładowania lub innej inicjalizacji, wywołaj StartGame() później.
+    // StartGame();
 }
 
 void APraktykiGameModeBase::StartGame()
@@ -79,22 +86,22 @@ void APraktykiGameModeBase::StartGame()
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("PorscheHUDUI is not set in BP_PraktykiGameModeBase. HUD will not be displayed."));
+        UE_LOG(LogTemp, Warning, TEXT("GameHUDWidgetClass is not set in GameMode. HUD will not be displayed."));
     }
-
-    APorschePlayerController* PC = Cast<APorschePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-    if (PC)
-    {
-        PC->CreateCarHUD();
-    }
-    UE_LOG(LogTemp, Log, TEXT("Game Started!"));
 }
 
 void APraktykiGameModeBase::EndGame()
 {
     GetWorldTimerManager().ClearTimer(GameTimerHandle); // Zatrzymaj timer
-    UE_LOG(LogTemp, Log, TEXT("Game Ended!"));
+    //UE_LOG(LogTemp, Log, TEXT("Game Ended! Player won: %s"), bPlayerWon ? TEXT("true") : TEXT("false"));
 
+    /*Tutaj powinieneś przełączyć się na ekran podsumowania.
+    if (UUserWidget* CurrentHUD = Cast<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD()))
+    {
+        // Jeśli używasz PlayerController::ClientSetHUD, to będziesz musiał to zmienić
+        //APorschePlayerController::ClientSetHUD;
+    }*/
+    // Na razie wracamy do menu głównego.
     ReturnToMainMenu();
 }
 
