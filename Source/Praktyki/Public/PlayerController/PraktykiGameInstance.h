@@ -12,7 +12,7 @@ enum class ERaceMode : uint8
 {
 	RM_None UMETA(DisplayName = "None"),
 	RM_Training UMETA(DisplayName = "Training"),
-	RM_Race	 UMETA(DisplayName = "Wyścig")
+	RM_Race	 UMETA(DisplayName = "Race")
 };
 
 /**

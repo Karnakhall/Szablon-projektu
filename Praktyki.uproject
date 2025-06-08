@@ -10,11 +10,11 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"ChaosVehicles",
-				"Engine"
+				"Engine",
+				"UMG"
 			]
 		}
 	],
-	"GameInstanceClass": "/Script/Praktyki.RaceGameInstance",
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
