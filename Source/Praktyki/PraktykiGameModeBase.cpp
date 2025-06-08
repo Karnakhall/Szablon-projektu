@@ -106,6 +106,10 @@ void APraktykiGameModeBase::ReturnToMainMenu()
     UGameplayStatics::OpenLevel(this, FName("TestMap")); // Nazwa mapy menu głównego
 }
 
+void APraktykiGameModeBase::CheckpointPassed(AActor* CheckpointActor)
+{
+}
+
 void APraktykiGameModeBase::UpdateGameTimer()
 {
     // Zwiększaj czas o interwał timera (0.01f)
@@ -124,6 +128,18 @@ void APraktykiGameModeBase::CheckGameEndConditions()
     {
         EndGame(); // Ukończono wymagane okrążenia, koniec gry.
     }
+}
+
+void APraktykiGameModeBase::InitializeCheckpoints()
+{
+}
+
+void APraktykiGameModeBase::ResetLap()
+{
+}
+
+void APraktykiGameModeBase::DisplayResultsScreen(bool bPlayerWon)
+{
 }
 
 
