@@ -37,22 +37,24 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (EditCondition = "bUseSteeringWheelControls"))
 	UInputMappingContext* SteeringWheelInputMappingContext; */
 
-	// Pointer to controlled vehicle
-	TObjectPtr<APorscheCar> PorscheVehiclePawn;
+	
 
 	// Below will be UI for the car, maybe.
-	/** Type of the UI to spawn */
+	// Type of the UI to spawn
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = UI)
 	TSubclassOf<UPorscheUI> PorscheUIClass;
 
-	/** Pointer to the UI widget */
+	// Pointer to the UI widget
 	TObjectPtr<UPorscheUI> PorscheUI;
-
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 
 public:
+
+	// Pointer to controlled vehicle
+	TObjectPtr<APorscheCar> PorscheVehiclePawn;
 
 	// Function for showing main menu
 	UFUNCTION(BlueprintCallable, Category = "UI")

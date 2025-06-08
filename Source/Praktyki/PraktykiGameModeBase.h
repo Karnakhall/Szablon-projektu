@@ -7,6 +7,7 @@
 #include "PlayerController/PraktykiGameInstance.h"
 #include "PraktykiGameModeBase.generated.h"
 
+class UPorscheUI;
 /**
  * 
  */
@@ -42,8 +43,7 @@ public:
 	float BestLapTime; 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-	TSubclassOf<UUserWidget> PorscheHUDUI;
-
+	TSubclassOf<UUserWidget> PorscheHUD;
 
 	// Docelowa liczba okrążeń dla bieżącej rozgrywki (ustawiana dynamicznie)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")

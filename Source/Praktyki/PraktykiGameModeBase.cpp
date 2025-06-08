@@ -70,14 +70,14 @@ void APraktykiGameModeBase::BeginPlay()
 
 void APraktykiGameModeBase::StartGame()
 {
-    // Logika rozpoczęcia gry: np. włączenie timera, odblokowanie inputu gracza
-   // Ustawienie timera na UpdateGameTimer co 0.01 sekundy dla dokładniejszego mierzenia czasu
+
+    // Ustawienie timera na UpdateGameTimer co 0.01 sekundy dla dokładniejszego mierzenia czasu
     GetWorldTimerManager().SetTimer(GameTimerHandle, this, &APraktykiGameModeBase::UpdateGameTimer, 0.01f, true);
     UE_LOG(LogTemp, Log, TEXT("Game Started!"));
 
-    if (PorscheHUDUI)
+    if (PorscheHUD)
     {
-        UUserWidget* HUDWidget = CreateWidget<UUserWidget>(GetWorld(), PorscheHUDUI);
+        UUserWidget* HUDWidget = CreateWidget<UUserWidget>(GetWorld(), PorscheHUD);
         if (HUDWidget)
         {
             HUDWidget->AddToViewport();
@@ -93,7 +93,7 @@ void APraktykiGameModeBase::StartGame()
 void APraktykiGameModeBase::EndGame()
 {
     GetWorldTimerManager().ClearTimer(GameTimerHandle); // Zatrzymaj timer
-    //UE_LOG(LogTemp, Log, TEXT("Game Ended! Player won: %s"), bPlayerWon ? TEXT("true") : TEXT("false"));
+    UE_LOG(LogTemp, Log, TEXT("Game Ended! Player won"));
 
     /*Tutaj powinieneś przełączyć się na ekran podsumowania.
     if (UUserWidget* CurrentHUD = Cast<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD()))
