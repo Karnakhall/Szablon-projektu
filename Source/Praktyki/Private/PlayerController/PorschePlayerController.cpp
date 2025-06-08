@@ -3,6 +3,7 @@
 
 #include "PlayerController/PorschePlayerController.h"
 #include "Cars/PorscheCar.h"
+#include "UI/PorscheUI.h"
 #include "EnhancedInputSubsystems.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
 #include "Blueprint/UserWidget.h"
@@ -15,6 +16,10 @@ void APorschePlayerController::BeginPlay()
 	{
 		ShowMenu();
 	}
+	PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
+
+	check(PorscheUI);
+	PorscheUI->AddToViewport();
 }
 
 void APorschePlayerController::SetupInputComponent()
@@ -72,13 +77,19 @@ void APorschePlayerController::HideMenu()
 	// Set up input on game and hide mouse coursor
 	SetInputMode(FInputModeGameOnly());
 	bShowMouseCursor = false;
+
 }
 
 void APorschePlayerController::Tick(float Delta)
 {
 	Super::Tick(Delta);
 
-	//Maybe add UI with updating speed etc.
+	// UI
+	if (IsValid(PorscheVehiclePawn) && IsValid(PorscheUI))
+	{
+		PorscheUI->UpdateSpeed(PorscheVehiclePawn->GetChaosVehicleMovement()->GetForwardSpeed());
+		PorscheUI->UpdateGear(PorscheVehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
+	}
 }
 
 void APorschePlayerController::OnPossess(APawn* InPawn)

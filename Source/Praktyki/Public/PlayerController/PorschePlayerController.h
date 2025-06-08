@@ -9,7 +9,7 @@
 
 class UInputMappingContext;
 class APorscheCar;
-class UVehiclesUI;
+class UPorscheUI;
 class UUserWidget;
 
 /**
@@ -23,7 +23,7 @@ class PRAKTYKI_API APorschePlayerController : public APlayerController
 	
 protected:
 
-	// Input Mapping COntext
+	// Input Mapping Context
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* InputMappingContext;
 
@@ -41,6 +41,12 @@ protected:
 	TObjectPtr<APorscheCar> PorscheVehiclePawn;
 
 	// Below will be UI for the car, maybe.
+	/** Type of the UI to spawn */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = UI)
+	TSubclassOf<UPorscheUI> PorscheUIClass;
+
+	/** Pointer to the UI widget */
+	TObjectPtr<UPorscheUI> PorscheUI;
 
 protected:
 	virtual void BeginPlay() override;
