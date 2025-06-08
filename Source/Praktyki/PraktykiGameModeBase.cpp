@@ -13,7 +13,6 @@ APraktykiGameModeBase::APraktykiGameModeBase()
 {
 	DefaultPawnClass = APorscheCar::StaticClass();
 	PlayerControllerClass = APorschePlayerController::StaticClass();
-    HUDClass = UPorscheUI::StaticClass();
 }
 
 void APraktykiGameModeBase::BeginPlay()
@@ -62,7 +61,6 @@ void APraktykiGameModeBase::BeginPlay()
         CurrentRaceModeType = ERaceMode::RM_Training;
     }
 
- 
     // StartGame(); is initialized in BP_PorscheUI
 }
 
@@ -73,9 +71,9 @@ void APraktykiGameModeBase::StartGame()
     GetWorldTimerManager().SetTimer(GameTimerHandle, this, &APraktykiGameModeBase::UpdateGameTimer, 0.01f, true);
     UE_LOG(LogTemp, Log, TEXT("Game Started!"));
 
-    if (PorscheHUD)
+    if (GameHUDClass)
     {
-        UUserWidget* HUDWidget = CreateWidget<UUserWidget>(GetWorld(), PorscheHUD);
+        UUserWidget* HUDWidget = CreateWidget<UUserWidget>(GetWorld(), GameHUDClass);
         if (HUDWidget)
         {
             HUDWidget->AddToViewport();

@@ -27,15 +27,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* InputMappingContext;
 
-	/** If true, the optional steering wheel input mapping context will be registered 
+	/** If true, the optional steering wheel input mapping context will be registered */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	bool bUseSteeringWheelControls = false;*/
+	bool bUseSteeringWheelControls = false;
 
 	/** Optional Input Mapping Context to be used for steering wheel input.
-	 *  This is added alongside the default Input Mapping Context and does not block other forms of input.
+	 This is added alongside the default Input Mapping Context and does not block other forms of input.*/
 	 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (EditCondition = "bUseSteeringWheelControls"))
-	UInputMappingContext* SteeringWheelInputMappingContext; */
+	UInputMappingContext* SteeringWheelInputMappingContext; 
 
 	
 

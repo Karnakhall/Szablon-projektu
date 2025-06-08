@@ -29,11 +29,11 @@ void APorschePlayerController::SetupInputComponent()
 		// add the mapping context so we get controls
 		Subsystem->AddMappingContext(InputMappingContext, 0);
 
-		/* optionally steering wheel context
+		// Optionally steering wheel context 
 		if (bUseSteeringWheelControls && SteeringWheelInputMappingContext)
 		{
 			Subsystem->AddMappingContext(SteeringWheelInputMappingContext, 1);
-		}*/
+		}
 	}
 }
 
