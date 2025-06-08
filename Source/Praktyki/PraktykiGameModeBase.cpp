@@ -62,10 +62,8 @@ void APraktykiGameModeBase::BeginPlay()
         CurrentRaceModeType = ERaceMode::RM_Training;
     }
 
-    // WAŻNE: W zależności od Twojego Setupu, StartGame() może być wywołane tutaj,
-    // jeśli gra ma się zaczynać od razu po załadowaniu poziomu.
-    // Jeśli używasz ekranu ładowania lub innej inicjalizacji, wywołaj StartGame() później.
-    // StartGame();
+ 
+    // StartGame(); is initialized in BP_PorscheUI
 }
 
 void APraktykiGameModeBase::StartGame()
