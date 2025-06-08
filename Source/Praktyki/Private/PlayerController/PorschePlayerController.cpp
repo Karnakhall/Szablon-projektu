@@ -16,10 +16,7 @@ void APorschePlayerController::BeginPlay()
 	{
 		ShowMenu();
 	}
-	PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
 
-	check(PorscheUI);
-	PorscheUI->AddToViewport();
 }
 
 void APorschePlayerController::SetupInputComponent()
@@ -78,6 +75,10 @@ void APorschePlayerController::HideMenu()
 	SetInputMode(FInputModeGameOnly());
 	bShowMouseCursor = false;
 
+	PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
+
+	check(PorscheUI);
+	PorscheUI->AddToViewport();
 }
 
 void APorschePlayerController::Tick(float Delta)
