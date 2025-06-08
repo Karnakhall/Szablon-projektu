@@ -62,6 +62,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void HideMenu();
 
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void CreateCarHUD();
+
 	virtual void Tick(float Delta) override;
 
 protected:
