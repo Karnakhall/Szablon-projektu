@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PlayerController/PorschePlayerController.h"
 #include "Cars/PorscheCar.h"
+#include "UI/PorscheUI.h"
 //#include "C:/Program Files/Epic Games/UE_5.5/Engine/Plugins/VirtualProduction/TextureShare/Source/TextureShareCore/Private/Module/TextureShareCoreLogDefines.h"
 //#include <Runtime/TraceLog/standalone_prologue.h>
 //#include "PlayerController/PraktykiGameInstance.h"
@@ -14,6 +15,7 @@ APraktykiGameModeBase::APraktykiGameModeBase()
 {
 	DefaultPawnClass = APorscheCar::StaticClass();
 	PlayerControllerClass = APorschePlayerController::StaticClass();
+    HUDClass = UPorscheUI::StaticClass();
 }
 
 void APraktykiGameModeBase::BeginPlay()
@@ -30,15 +32,17 @@ void APraktykiGameModeBase::BeginPlay()
 
         if (CurrentRaceModeType == ERaceMode::RM_Training)
         {
-            TargetLaps = 1; // Trening: zawsze 1 okrążenie na sztywno
-            TargetMaxRaceTime = 0.0f; // Trening: brak limitu czasowego (tylko 1 okrążenie)
-            // Ustawiamy 0.0f, a CheckGameEndConditions zignoruje to.
-            UE_LOG(LogTemp, Log, TEXT("Game Mode: Training. Target Laps: %d, No time limit."), TargetLaps);
+             
+            TargetLaps = 1;     // Trening zawsze 1 okrążenie
+            TargetMaxRaceTime = 0.0f;   // Trening brak limitu czasowego
+            UE_LOG(LogTemp, Log, TEXT("Game Mode: Training. Target Laps: %d, No time limit."), TargetLaps);  // Ustawiamy 0.0f, a CheckGameEndConditions zignoruje to.
         }
         else if (CurrentRaceModeType == ERaceMode::RM_Race)
         {
-            TargetLaps = GameInstance->NumberOfLaps; // Wyścig: liczba okrążeń z menu
-            TargetMaxRaceTime = 0.0f; // Wyścig: brak limitu czasowego (tylko okrążenia)
+           
+            TargetLaps = GameInstance->NumberOfLaps;     // Wyścig liczba okrążeń z menu
+            TargetMaxRaceTime = 0.0f;   // Wyścig brak limitu czasowego 
+
             // Czas będzie mierzony, ale nie będzie kończył gry.
             UE_LOG(LogTemp, Log, TEXT("Game Mode: Race. Target Laps: %d, Time will be measured, but no time limit."), TargetLaps);
         }

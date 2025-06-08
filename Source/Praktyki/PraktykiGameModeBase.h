@@ -33,6 +33,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	ERaceMode CurrentRaceModeType;
 
+	// Liczba ukończonych okrążeń
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	int32 CurrentLapsCompleted;
 
