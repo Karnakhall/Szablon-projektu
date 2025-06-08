@@ -41,6 +41,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float BestLapTime; 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> PorscheHUDUI;
+
 
 	// Docelowa liczba okrążeń dla bieżącej rozgrywki (ustawiana dynamicznie)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")

@@ -7,9 +7,7 @@
 #include "PlayerController/PorschePlayerController.h"
 #include "Cars/PorscheCar.h"
 #include "UI/PorscheUI.h"
-//#include "C:/Program Files/Epic Games/UE_5.5/Engine/Plugins/VirtualProduction/TextureShare/Source/TextureShareCore/Private/Module/TextureShareCoreLogDefines.h"
-//#include <Runtime/TraceLog/standalone_prologue.h>
-//#include "PlayerController/PraktykiGameInstance.h"
+
 
 APraktykiGameModeBase::APraktykiGameModeBase()
 {
@@ -76,6 +74,20 @@ void APraktykiGameModeBase::StartGame()
    // Ustawienie timera na UpdateGameTimer co 0.01 sekundy dla dokładniejszego mierzenia czasu
     GetWorldTimerManager().SetTimer(GameTimerHandle, this, &APraktykiGameModeBase::UpdateGameTimer, 0.01f, true);
     UE_LOG(LogTemp, Log, TEXT("Game Started!"));
+
+    if (PorscheHUDUI)
+    {
+        UUserWidget* HUDWidget = CreateWidget<UUserWidget>(GetWorld(), PorscheHUDUI);
+        if (HUDWidget)
+        {
+            HUDWidget->AddToViewport();
+            UE_LOG(LogTemp, Log, TEXT("Game HUD Widget created and added to viewport."));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("GameHUDWidgetClass is not set in GameMode. HUD will not be displayed."));
+    }
 }
 
 void APraktykiGameModeBase::EndGame()
@@ -83,7 +95,12 @@ void APraktykiGameModeBase::EndGame()
     GetWorldTimerManager().ClearTimer(GameTimerHandle); // Zatrzymaj timer
     //UE_LOG(LogTemp, Log, TEXT("Game Ended! Player won: %s"), bPlayerWon ? TEXT("true") : TEXT("false"));
 
-    // Tutaj powinieneś przełączyć się na ekran podsumowania.
+    /*Tutaj powinieneś przełączyć się na ekran podsumowania.
+    if (UUserWidget* CurrentHUD = Cast<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD()))
+    {
+        // Jeśli używasz PlayerController::ClientSetHUD, to będziesz musiał to zmienić
+        //APorschePlayerController::ClientSetHUD;
+    }*/
     // Na razie wracamy do menu głównego.
     ReturnToMainMenu();
 }
