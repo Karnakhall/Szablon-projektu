@@ -30,13 +30,11 @@ protected:
 	// Pointer to controlled vehicle
 	TObjectPtr<APorscheCar> PorscheVehiclePawn;
 
-	/** If true, the optional steering wheel input mapping context will be registered */
+	// Optional steering wheel input mapping context will be registered
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	bool bUseSteeringWheelControls = false;
 
-	/** Optional Input Mapping Context to be used for steering wheel input.
-	 This is added alongside the default Input Mapping Context and does not block other forms of input.*/
-	 
+	// Optional Input Mapping Context to be used for steering wheel input.
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (EditCondition = "bUseSteeringWheelControls"))
 	UInputMappingContext* SteeringWheelInputMappingContext; 
 

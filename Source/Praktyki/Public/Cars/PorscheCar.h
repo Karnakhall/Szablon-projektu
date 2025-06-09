@@ -43,23 +43,21 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
-	/*// Second Spring Arm
+	// Second Spring Arm
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* SecondSpringArm;
 
 	// Second Camera
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* SecondCamera;
-	*/
+	
 
-	/** CameraComponents Ends */
+	// CameraComponents Ends 
 
 	// Cast to ChaosVehicle component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Car|Movement")
 	TObjectPtr<UChaosWheeledVehicleMovementComponent> ChaosVehicleMovement;
 
-	/** Returns the cast Chaos Vehicle Movement subobject */
-	FORCEINLINE const TObjectPtr<UChaosWheeledVehicleMovementComponent>& GetChaosVehicleMovement() const { return ChaosVehicleMovement; }
 protected:
 	virtual void BeginPlay() override;
 
@@ -77,6 +75,17 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* HandBrakeAction;
+
+	// Toggle Camera Action
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ToggleCameraAction;
+
+	// Reset Vehicle Action
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ResetVehicleAction;
+
+	// Which camera is active 
+	bool bCameraActive = false;
 	/*
 	*	Input Actions Ends
 	*/
@@ -94,6 +103,10 @@ protected:
 
 	void HandBrakeStart(const FInputActionValue& Value);
 	void HandBrakeStop(const FInputActionValue& Value);
+	
+	void ToggleCamera(const FInputActionValue& Value);
+	
+	void ResetVehicle(const FInputActionValue& Value);
 
 	/*
 	*	Handles Inputs Ends
@@ -224,6 +237,16 @@ protected:
 	*	Static Mesh Components Ends
 	*/
 
-
+	public:
+		/** Returns the front spring arm subobject */
+		FORCEINLINE USpringArmComponent* GetSpringArm() const { return SpringArm; }
+		/** Returns the front camera subobject */
+		FORCEINLINE UCameraComponent* GetCamera() const { return Camera; }
+		/** Returns the back spring arm subobject */
+		FORCEINLINE USpringArmComponent* GetSecondSpringArm() const { return SecondSpringArm; }
+		/** Returns the back camera subobject */
+		FORCEINLINE UCameraComponent* GetSecondCamera() const { return SecondCamera; }
+		// Returns the cast Chaos Vehicle Movement subobject
+		FORCEINLINE const TObjectPtr<UChaosWheeledVehicleMovementComponent>& GetChaosVehicleMovement() const { return ChaosVehicleMovement; }
 };
 
