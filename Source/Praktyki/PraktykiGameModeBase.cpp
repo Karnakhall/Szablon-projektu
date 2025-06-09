@@ -42,13 +42,6 @@ void APraktykiGameModeBase::StartGame()
 {
     UE_LOG(LogTemp, Log, TEXT("Game Started!"));
     
-    APorschePlayerController* PC = Cast<APorschePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-    if (!PC)
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController in StartGame(). Cannot start game."));
-        return;
-    }
-    PC->CreateCarHUD();
     // Resetowanie stanu gry przed rozpoczęciem nowej rozgrywki
     CurrentLapsCompleted = 0;
     CurrentRaceTime = 0.0f;
@@ -63,18 +56,22 @@ void APraktykiGameModeBase::StartGame()
     if (GameInstance)
     {
         CurrentRaceModeType = GameInstance->SelectedRaceMode;
-        TargetLaps = GameInstance->NumberOfLaps;
-        TargetMaxRaceTime = GameInstance->MaxRaceTime;
-        UE_LOG(LogTemp, Log, TEXT("StartGame() logic based on selected mode: %s"), *UEnum::GetValueAsString(CurrentRaceModeType));
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to get PraktykiGameInstance in StartGame(). Using default RM_None."));
-        CurrentRaceModeType = ERaceMode::RM_None;
-        TargetLaps = 0;
-        TargetMaxRaceTime = 0.0f;
-    }
+        UE_LOG(LogTemp, Log, TEXT("GameInstance loaded. Selected mode: %s"), *UEnum::GetValueAsString(CurrentRaceModeType));
 
+        if (CurrentRaceModeType == ERaceMode::RM_Training)
+        {
+            TargetLaps = 1; // Trening to ZAWSZE jedno okrążenie
+            TargetMaxRaceTime = 0.0f; // Trening nie ma limitu czasu
+            UE_LOG(LogTemp, Log, TEXT("Game Mode: Training. Target Laps FORCED to: %d"), TargetLaps);
+        }
+        else if (CurrentRaceModeType == ERaceMode::RM_Race)
+        {
+            TargetLaps = GameInstance->NumberOfLaps; // Wyścig pobiera liczbę okrążeń z GameInstance
+            TargetMaxRaceTime = GameInstance->MaxRaceTime; // Pobierz też docelowy czas (nawet jeśli 0)
+            UE_LOG(LogTemp, Log, TEXT("Game Mode: Race. Target Laps set to: %d"), TargetLaps);
+        }
+    }
+    
     // 3. Sprawdź tryb gry, aby uruchomić timer i HUD gry (czas/okrążenia)
     if (CurrentRaceModeType == ERaceMode::RM_Race || CurrentRaceModeType == ERaceMode::RM_Training)
     {
@@ -116,6 +113,13 @@ void APraktykiGameModeBase::StartGame()
             CurrentGameHUDInstance = nullptr;
         }
     }
+    APorschePlayerController* PC = Cast<APorschePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+    if (PC)
+    {
+        PC->SetInputMode(FInputModeGameOnly());
+        PC->bShowMouseCursor = false;
+        PC->CreateCarHUD();
+    }
 }
 
 void APraktykiGameModeBase::EndGame()
@@ -144,8 +148,26 @@ void APraktykiGameModeBase::CheckGameEndConditions()
 {
     // Ta zmienna będzie śledzić, czy gra powinna się zakończyć w tej klatce.
     bool bShouldGameEnd = false;
+    // Warunek 1: Ukończono wymaganą liczbę okrążeń (działa dla Race i Training)
+    if (TargetLaps > 0 && CurrentLapsCompleted >= TargetLaps)
+    {
+        UE_LOG(LogTemp, Log, TEXT("Game End Condition Met: All %d laps completed."), TargetLaps);
+        bShouldGameEnd = true;
+    }
 
-    // Sprawdzamy, czy tryb gry wymaga liczenia okrążeń (Wyścig lub Trening)
+    // Warunek 2: Przekroczono maksymalny czas gry (jeśli jest ustawiony)
+    if (TargetMaxRaceTime > 0.0f && CurrentRaceTime >= TargetMaxRaceTime)
+    {
+        UE_LOG(LogTemp, Log, TEXT("Game End Condition Met: Max race time (%f) exceeded."), TargetMaxRaceTime);
+        bShouldGameEnd = true;
+    }
+
+    // Jeśli jakikolwiek warunek jest spełniony, zakończ grę TYLKO RAZ.
+    if (bShouldGameEnd)
+    {
+        EndGame();
+    }
+   /* // Sprawdzamy, czy tryb gry wymaga liczenia okrążeń (Wyścig lub Trening)
     if (CurrentRaceModeType == ERaceMode::RM_Race || CurrentRaceModeType == ERaceMode::RM_Training)
     {
         // Warunek 1: Ukończono wymaganą liczbę okrążeń.
@@ -170,7 +192,7 @@ void APraktykiGameModeBase::CheckGameEndConditions()
     if (bShouldGameEnd)
     {
         EndGame();
-    }
+    }*/
 }
 
 void APraktykiGameModeBase::InitializeCheckpoints()
