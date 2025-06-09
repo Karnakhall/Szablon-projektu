@@ -59,7 +59,7 @@ void ATrackCheckpoint::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActo
         if (GameMode)
         {
             // Wywołaj funkcję w GameMode, przekazując siebie (ten checkpoint)
-            GameMode->CheckpointPassed(this); // Przekazujemy 'this' - czyli referencję do ACheckpoint
+            GameMode->CheckpointPassed(this); // Przekazujemy 'this' - czyli referencję do ATrackCheckpoint
         }
     }
 }

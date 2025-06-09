@@ -23,71 +23,24 @@ APraktykiGameModeBase::APraktykiGameModeBase()
 void APraktykiGameModeBase::BeginPlay()
 {
     Super::BeginPlay();
-    // Resetowanie stanu gry na początku poziomu
-    CurrentLapsCompleted = 0;
-    CurrentRaceTime = 0.0f;
-    BestLapTime = 0.0f; 
-    BestRaceTime = FLT_MAX; // Ustaw na maksymalną wartość, aby pierwszy czas był najlepszy
-    CurrentLapStartTime = 0.0f;
-    CurrentLapTime = 0.0f;
-    NextCheckpointIndex = 0;
-    CurrentGameHUDInstance = nullptr;
-    CompletedLapTimes.Empty(); // Wyczyść czasy okrążeń
-
     UE_LOG(LogTemp, Log, TEXT("Game Mode Base BeginPlay."));
+    InitializeCheckpoints();
+}
 
-    UPraktykiGameInstance* GameInstance = Cast<UPraktykiGameInstance>(GetGameInstance());
-    if (GameInstance)
+void APraktykiGameModeBase::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    // Zaktualizuj CurrentLapTime tylko jeśli timer jest aktywny
+    if (GetWorldTimerManager().IsTimerActive(GameTimerHandle))
     {
-        CurrentRaceModeType = GameInstance->SelectedRaceMode;
-        TargetLaps = GameInstance->NumberOfLaps;
-        TargetMaxRaceTime = GameInstance->MaxRaceTime;
-        UE_LOG(LogTemp, Log, TEXT("Game Mode Base initialized from GameInstance. Current Mode: %s, Laps: %d, Max Time: %.1f"),
-            *UEnum::GetValueAsString(CurrentRaceModeType), TargetLaps, TargetMaxRaceTime);
-
-        /*if (CurrentRaceModeType == ERaceMode::RM_Training)
-        {
-             
-            TargetLaps = 1;     // Trening zawsze 1 okrążenie
-            TargetMaxRaceTime = 0.0f;   // Trening brak limitu czasowego
-            UE_LOG(LogTemp, Log, TEXT("Game Mode: Training. Target Laps: %d, No time limit."), TargetLaps);  // Ustawiamy 0.0f, a CheckGameEndConditions zignoruje to.
-        }
-        else if (CurrentRaceModeType == ERaceMode::RM_Race)
-        {
-           
-            TargetLaps = GameInstance->NumberOfLaps;     // Wyścig liczba okrążeń z menu
-            TargetMaxRaceTime = 0.0f;   // Wyścig brak limitu czasowego 
-
-            // Czas będzie mierzony, ale nie będzie kończył gry.
-            UE_LOG(LogTemp, Log, TEXT("Game Mode: Race. Target Laps: %d, Time will be measured, but no time limit."), TargetLaps);
-        }
-        else
-        {
-            // Domyślne zachowanie, jeśli tryb nie jest wybrany
-            TargetLaps = 1;
-            TargetMaxRaceTime = 0.0f; // Bez limitu czasu dla domyślnego trybu
-            CurrentRaceModeType = ERaceMode::RM_Training;
-            UE_LOG(LogTemp, Warning, TEXT("No game mode selected. Defaulting to Training with %d lap and no time limit."), TargetLaps);
-        }*/
+        CurrentLapTime = CurrentRaceTime - CurrentLapStartTime;
     }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to get PraktykiGameInstance!"));
-        // Jeśli GameInstance nie został pobrany
-        CurrentRaceModeType = ERaceMode::RM_None;
-        TargetLaps = 0;
-        TargetMaxRaceTime = 0.0f; 
-    }
-
-    InitializeCheckpoints(); // Zainicjuj checkpointy na starcie
-    // StartGame(); is initialized in BP_PorscheUI
 }
 
 void APraktykiGameModeBase::StartGame()
 {
-    UE_LOG(LogTemp, Log, TEXT("StartGame() called in GameMode."));
-    // Ustawienie timera na UpdateGameTimer co 0.01 sekundy dla dokładniejszego mierzenia czasu
-    GetWorldTimerManager().SetTimer(GameTimerHandle, this, &APraktykiGameModeBase::UpdateGameTimer, 0.01f, true);
+    UE_LOG(LogTemp, Log, TEXT("Game Started!"));
     
     APorschePlayerController* PC = Cast<APorschePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
     if (!PC)
@@ -163,214 +116,142 @@ void APraktykiGameModeBase::StartGame()
             CurrentGameHUDInstance = nullptr;
         }
     }
-    /*
-    if (GameHUDClass)
-    {
-        UUserWidget* HUDWidget = CreateWidget<UUserWidget>(GetWorld(), GameHUDClass);
-        if (HUDWidget)
-        {
-            HUDWidget->AddToViewport();
-            UE_LOG(LogTemp, Log, TEXT("Game HUD Widget created and added to viewport."));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("GameHUDWidgetClass is not set in GameMode. HUD will not be displayed."));
-    }*/
 }
 
 void APraktykiGameModeBase::EndGame()
 {
     GetWorldTimerManager().ClearTimer(GameTimerHandle); // Zatrzymaj timer
-    UE_LOG(LogTemp, Log, TEXT("Game Ended! Player won"));
-
-    // Ukryj HUD gry (jeśli jest widoczny)
-    if (CurrentGameHUDInstance && CurrentGameHUDInstance->IsInViewport())
-    {
-        CurrentGameHUDInstance->RemoveFromParent();
-        CurrentGameHUDInstance = nullptr;
-    }
-
-    // Ukryj HUD samochodu
-    APorschePlayerController* PC = Cast<APorschePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-    if (PC)
-    {
-        PC->DestroyCarHUD(); // Wywołaj funkcję z PlayerController
-    }
-
-    // Wyświetl ekran wyników
+    UE_LOG(LogTemp, Log, TEXT("Game Ended! Showing results screen."));
     DisplayResultsScreen(true);
 }
 
 void APraktykiGameModeBase::ReturnToMainMenu()
 {
-    // Ukryj wszelkie pozostałe HUDy i ekrany wyników, zanim załadujemy nową mapę
-    APorschePlayerController* PC = Cast<APorschePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-    if (PC)
-    {
-        PC->DestroyCarHUD();
-        // Jeśli PC również ma funkcję do ukrywania ekranów wyników, wywołaj ją
-        PC->DestroyResultsScreen(); // Musimy dodać tę funkcję do PlayerController
-    }
-    if (CurrentGameHUDInstance && CurrentGameHUDInstance->IsInViewport())
-    {
-        CurrentGameHUDInstance->RemoveFromParent();
-        CurrentGameHUDInstance = nullptr;
-    }
     UGameplayStatics::OpenLevel(this, FName("TestMap"));
 }
 
 void APraktykiGameModeBase::UpdateGameTimer()
 {
-    CurrentRaceTime = GetWorld()->GetTimeSeconds() - CurrentLapStartTime; // Czas od rozpoczęcia okrążenia/gry
+    CurrentRaceTime += GetWorldTimerManager().GetTimerRate(GameTimerHandle);
 
     CheckGameEndConditions();
+
+    // Zaktualizuj czas bieżącego okrążenia
+    CurrentLapTime = GetWorld()->GetTimeSeconds() - CurrentLapStartTime;
 }
 
 void APraktykiGameModeBase::CheckGameEndConditions()
 {
-    // Warunki zakończenia gry tylko dla trybów Race i Training
+    // Ta zmienna będzie śledzić, czy gra powinna się zakończyć w tej klatce.
+    bool bShouldGameEnd = false;
+
+    // Sprawdzamy, czy tryb gry wymaga liczenia okrążeń (Wyścig lub Trening)
     if (CurrentRaceModeType == ERaceMode::RM_Race || CurrentRaceModeType == ERaceMode::RM_Training)
     {
-        bool bLapsCompleted = (TargetLaps > 0 && CurrentLapsCompleted >= TargetLaps);
-        bool bTimeExpired = (TargetMaxRaceTime > 0.0f && CurrentRaceTime >= TargetMaxRaceTime);
-
-        if (bLapsCompleted || bTimeExpired)
+        // Warunek 1: Ukończono wymaganą liczbę okrążeń.
+        // TargetLaps jest poprawnie ustawiane w BeginPlay() dla obu trybów.
+        if (TargetLaps > 0 && CurrentLapsCompleted >= TargetLaps)
         {
-            EndGame();
+            UE_LOG(LogTemp, Log, TEXT("Game End Condition Met: All %d laps completed for mode %s."), TargetLaps, *UEnum::GetValueAsString(CurrentRaceModeType));
+            bShouldGameEnd = true;
         }
+    }
+
+    // Warunek 2: Przekroczono maksymalny czas gry (jeśli jest ustawiony).
+    // Ten warunek jest niezależny od liczby okrążeń.
+    if (TargetMaxRaceTime > 0.0f && CurrentRaceTime >= TargetMaxRaceTime)
+    {
+        UE_LOG(LogTemp, Log, TEXT("Game End Condition Met: Max race time (%f) exceeded."), TargetMaxRaceTime);
+        bShouldGameEnd = true;
+    }
+
+    // Jeśli którykolwiek z powyższych warunków został spełniony, zakończ grę.
+    // Dzięki temu EndGame() zostanie wywołane tylko RAZ.
+    if (bShouldGameEnd)
+    {
+        EndGame();
     }
 }
 
 void APraktykiGameModeBase::InitializeCheckpoints()
 {
-    ActiveCheckpoints.Empty();
     TArray<AActor*> FoundActors;
-    UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("Checkpoint"), FoundActors);
-
-   /*// Sortujemy checkpointy po ich nazwach/numerach, aby zachować kolejność
-    // Zakładamy, że checkpointy są nazwane "Checkpoint_0", "Checkpoint_1", ..., "Checkpoint_N"
-    FoundActors.Sort([](const AActor& A, const AActor& B)
-        {
-            FString NameA = A.GetName();
-            FString NameB = B.GetName();
-            int32 NumA, NumB;
-            NameA.RemoveFromStart("Checkpoint_");
-            NameB.RemoveFromStart("Checkpoint_");
-            // Zakładamy, że konwersja do int jest bezpieczna
-            FCString::Atoi(*NameA);
-            FCString::Atoi(*NameB);
-            return FCString::Atoi(*NameA) < FCString::Atoi(*NameB);
-        });
-
-    // Sprawdź, czy pierwszy checkpoint to "StartLine"
-    AActor* StartLine = nullptr;
-    TArray<AActor*> FoundStartLines;
-    UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("StartLine"), FoundStartLines);
-    if (FoundStartLines.Num() > 0)
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrackCheckpoint::StaticClass(), FoundActors);
+    if (FoundActors.Num() == 0)
     {
-        StartLine = FoundStartLines[0];
-        // Upewnij się, że StartLine jest na początku listy ActiveCheckpoints
-        // Możesz albo dodać go na początek, albo upewnić się, że to pierwszy tag "Checkpoint"
-        // Jeśli używasz tagu "StartLine" jako pierwszego checkpointa, po prostu dodaj go
-        ActiveCheckpoints.Add(StartLine);
+        UE_LOG(LogTemp, Warning, TEXT("No ATrackCheckpoint actors found in the level. Race may not function correctly."));
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("No actor with tag 'StartLine' found! Checkpoint system might not work correctly."));
-    }
-    */
-    for (AActor* Actor : FoundActors)
-    {
-        ATrackCheckpoint* Checkpoint = Cast<ATrackCheckpoint>(Actor);
-        if (Checkpoint)
+        TrackCheckpoints.Empty();
+        for (AActor* Actor : FoundActors)
         {
-            ActiveCheckpoints.Add(Checkpoint);
+            ATrackCheckpoint* Checkpoint = Cast<ATrackCheckpoint>(Actor);
+            if (Checkpoint)
+            {
+                TrackCheckpoints.Add(Checkpoint);
+            }
         }
     }
-
-    // Sortuj checkpointy po ich numerze porządkowym (CheckpointOrder)
-    ActiveCheckpoints.Sort([](const ATrackCheckpoint& A, const ATrackCheckpoint& B)
+    // Posortuj checkpointy po ich CheckpointOrder
+    TrackCheckpoints.Sort([](const ATrackCheckpoint& A, const ATrackCheckpoint& B)
         {
             return A.CheckpointOrder < B.CheckpointOrder;
         });
 
-    // Dodatkowo, sprawdzamy, czy pierwszy checkpoint to faktycznie linia startu
-    if (ActiveCheckpoints.Num() > 0 && !ActiveCheckpoints[0]->bIsStartFinishLine)
+    // Sprawdzenie, czy pierwszy checkpoint to linia startu/mety
+    if (TrackCheckpoints.IsValidIndex(0) && !TrackCheckpoints[0]->bIsStartFinishLine)
     {
-        UE_LOG(LogTemp, Warning, TEXT("First checkpoint (%s) is not marked as Start/Finish Line (bIsStartFinishLine = true). Please set it in Blueprint."), *ActiveCheckpoints[0]->GetName());
+        UE_LOG(LogTemp, Warning, TEXT("First checkpoint (Order 0) is not marked as Start/Finish Line!"));
     }
 
-
-    if (ActiveCheckpoints.Num() > 0)
-    {
-        UE_LOG(LogTemp, Log, TEXT("Initialized %d checkpoints using ACheckpoint class."), ActiveCheckpoints.Num());
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("No ACheckpoint actors found in the level. Race may not function correctly."));
-    }
+    UE_LOG(LogTemp, Log, TEXT("Found %d checkpoints. First checkpoint order: %d. Last checkpoint order: %d."),
+        TrackCheckpoints.Num(),
+        TrackCheckpoints.IsValidIndex(0) ? TrackCheckpoints[0]->CheckpointOrder : -1,
+        TrackCheckpoints.IsValidIndex(TrackCheckpoints.Num() - 1) ? TrackCheckpoints.Last()->CheckpointOrder : -1
+    );
 }
 
 void APraktykiGameModeBase::CheckpointPassed(ATrackCheckpoint* CheckpointActor)
 {
-    // Upewnij się, że to tryb wyścigu lub treningu
-    if (CurrentRaceModeType == ERaceMode::RM_None)
-    {
-        return;
-    }
+    if (!CheckpointActor) return;
 
-    // Sprawdź, czy przekroczony checkpoint jest tym, którego oczekujemy
-    if (ActiveCheckpoints.IsValidIndex(NextCheckpointIndex) && ActiveCheckpoints[NextCheckpointIndex] == CheckpointActor)
+    // Sprawdź, czy to oczekiwany checkpoint
+    if (TrackCheckpoints.IsValidIndex(NextCheckpointIndex) && TrackCheckpoints[NextCheckpointIndex] == CheckpointActor)
     {
-        UE_LOG(LogTemp, Log, TEXT("Checkpoint %d (%s) passed."), NextCheckpointIndex, *CheckpointActor->GetName());
+        UE_LOG(LogTemp, Log, TEXT("Passed checkpoint: Order %d"), CheckpointActor->CheckpointOrder);
+        NextCheckpointIndex++;
 
-        // Jeśli to jest ostatni checkpoint (linia mety)
-        if (CheckpointActor->bIsStartFinishLine) // Teraz sprawdzamy flagę bIsStartFinishLine
+        // Jeśli osiągnięto ostatni checkpoint (linia mety/startu)
+        if (NextCheckpointIndex >= TrackCheckpoints.Num())
         {
-            // Oznacza ukończenie okrążenia
+            // Oznacza to, że gracz ukończył okrążenie
             CurrentLapsCompleted++;
-            float LapDuration = GetWorld()->GetTimeSeconds() - CurrentLapStartTime;
+            float LapDuration = CurrentRaceTime - CurrentLapStartTime;
             CompletedLapTimes.Add(LapDuration);
-            CurrentLapTime = LapDuration; // Aktualny czas okrążenia
+            UE_LOG(LogTemp, Log, TEXT("Lap %d completed in %f seconds."), CurrentLapsCompleted, LapDuration);
 
+            // Zaktualizuj najlepszy czas okrążenia
             if (BestLapTime == 0.0f || LapDuration < BestLapTime)
             {
                 BestLapTime = LapDuration;
-                UE_LOG(LogTemp, Log, TEXT("New Best Lap Time: %f"), BestLapTime);
-            }
-            UE_LOG(LogTemp, Log, TEXT("Lap %d completed in %f seconds. Total Laps: %d / %d"), CurrentLapsCompleted, LapDuration, CurrentLapsCompleted, TargetLaps);
-
-            // Sprawdzamy warunki zakończenia gry
-            if (CurrentLapsCompleted >= TargetLaps && TargetLaps > 0)
-            {
-                EndGame();
-                return;
+                UE_LOG(LogTemp, Log, TEXT("New best lap time: %f"), BestLapTime);
             }
 
-            // Resetujemy na początek następnego okrążenia
+            // Zresetuj indeks checkpointów dla następnego okrążenia
             NextCheckpointIndex = 0;
-            CurrentLapStartTime = GetWorld()->GetTimeSeconds(); // Zresetuj czas startu okrążenia
-            UE_LOG(LogTemp, Log, TEXT("Starting new lap. Next checkpoint expected: %s (Order: %d)"),
-                ActiveCheckpoints.IsValidIndex(NextCheckpointIndex) ? *ActiveCheckpoints[NextCheckpointIndex]->GetName() : TEXT("N/A"),
-                ActiveCheckpoints.IsValidIndex(NextCheckpointIndex) ? ActiveCheckpoints[NextCheckpointIndex]->CheckpointOrder : -1);
-        }
-        else
-        {
-            // Przejdź do następnego checkpointa
-            NextCheckpointIndex++;
-            UE_LOG(LogTemp, Log, TEXT("Moving to next checkpoint. Next expected: %s (Order: %d)"),
-                ActiveCheckpoints.IsValidIndex(NextCheckpointIndex) ? *ActiveCheckpoints[NextCheckpointIndex]->GetName() : TEXT("N/A"),
-                ActiveCheckpoints.IsValidIndex(NextCheckpointIndex) ? ActiveCheckpoints[NextCheckpointIndex]->CheckpointOrder : -1);
+            CurrentLapStartTime = CurrentRaceTime; // Ustaw początek nowego okrążenia
+
+            CheckGameEndConditions(); // Sprawdź, czy okrążenie zakończyło grę
         }
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("Wrong checkpoint passed: %s (Order: %d). Expected: %s (Order: %d)"),
-            *CheckpointActor->GetName(), CheckpointActor->CheckpointOrder,
-            ActiveCheckpoints.IsValidIndex(NextCheckpointIndex) ? *ActiveCheckpoints[NextCheckpointIndex]->GetName() : TEXT("N/A"),
-            ActiveCheckpoints.IsValidIndex(NextCheckpointIndex) ? ActiveCheckpoints[NextCheckpointIndex]->CheckpointOrder : -1);
-        // Możesz dodać logikę kary (np. ResetLap())
+        // Jeśli gracz przejechał przez checkpoint w złej kolejności
+        UE_LOG(LogTemp, Warning, TEXT("Passed checkpoint (Order %d) out of order. Expected: Order %d."),
+            CheckpointActor->CheckpointOrder,
+            TrackCheckpoints.IsValidIndex(NextCheckpointIndex) ? TrackCheckpoints[NextCheckpointIndex]->CheckpointOrder : -1
+        );
     }
 }
 
@@ -384,10 +265,12 @@ void APraktykiGameModeBase::ResetLap()
 
 void APraktykiGameModeBase::DisplayResultsScreen(bool bPlayerWon)
 {
+    // Ukryj HUD samochodu
     APorschePlayerController* PC = Cast<APorschePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
     if (!PC)
     {
         UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController to display results."));
+        ReturnToMainMenu(); // Fallback
         return;
     }
 
@@ -395,12 +278,12 @@ void APraktykiGameModeBase::DisplayResultsScreen(bool bPlayerWon)
 
     if (CurrentRaceModeType == ERaceMode::RM_Race)
     {
-        WidgetToDisplay = RaceResultsWidgetClass;
-        BestRaceTime = CurrentRaceTime;
+        WidgetToDisplay = RaceResultsWidgetClass; // Użyj nowej zmiennej
+
     }
     else if (CurrentRaceModeType == ERaceMode::RM_Training)
     {
-        WidgetToDisplay = TrainingResultsWidgetClass;
+        WidgetToDisplay = TrainingResultsWidgetClass; // Użyj nowej zmiennej
     }
 
     if (WidgetToDisplay)
@@ -409,13 +292,10 @@ void APraktykiGameModeBase::DisplayResultsScreen(bool bPlayerWon)
         if (ResultsWidget)
         {
             ResultsWidget->AddToViewport();
+            PC->CurrentResultsScreenInstance = ResultsWidget; // Zapisz referencję
             PC->SetInputMode(FInputModeUIOnly());
             PC->bShowMouseCursor = true;
 
-            // TODO: Przekaż dane do widgetu wyników
-            // Będziesz musiał stworzyć BlueprintCallable funkcje w tych widgetach
-            // np. ResultsWidget->Execute_SetRaceResults(ResultsWidget, CurrentRaceTime, CompletedLapTimes, BestLapTime);
-            // Ale na razie, po prostu wyświetl ekran.
             UE_LOG(LogTemp, Log, TEXT("Results screen displayed for mode: %s"), *UEnum::GetValueAsString(CurrentRaceModeType));
             UE_LOG(LogTemp, Log, TEXT("Best Lap Time: %f"), BestLapTime);
             UE_LOG(LogTemp, Log, TEXT("Total Race Time: %f"), CurrentRaceTime);
@@ -426,12 +306,14 @@ void APraktykiGameModeBase::DisplayResultsScreen(bool bPlayerWon)
         }
         else
         {
-            UE_LOG(LogTemp, Error, TEXT("Failed to create Results Widget."));
+            UE_LOG(LogTemp, Error, TEXT("Failed to create results widget for mode: %s! Returning to main menu."), *UEnum::GetValueAsString(CurrentRaceModeType));
+            ReturnToMainMenu(); // Fallback
         }
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("Results Widget Class is not set for %s mode in GameMode."), *UEnum::GetValueAsString(CurrentRaceModeType));
+        UE_LOG(LogTemp, Warning, TEXT("Results widget class not set for current race mode. Returning to main menu."));
+        ReturnToMainMenu();
     }
 }
 

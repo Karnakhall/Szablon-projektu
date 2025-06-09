@@ -54,11 +54,7 @@ protected:
 
 	// Instancja menu głównego
 	UPROPERTY()
-	TObjectPtr<UUserWidget> WidgetInstance; // Zmieniono na TObjectPtr (dla menu)
-
-	// Instancja ekranu wyników (aby móc go zniszczyć)
-	UPROPERTY()
-	TObjectPtr<UUserWidget> CurrentResultsScreenInstance;
+	TObjectPtr<UUserWidget> WidgetInstance;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -82,7 +78,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void DestroyCarHUD();
 
-	// Funkcja do niszczenia ekranu wyników (NOWE)
+	// Instancja ekranu wyników (aby móc go zniszczyć)
+	UPROPERTY()
+	TObjectPtr<UUserWidget> CurrentResultsScreenInstance;
+
+	// Funkcja do niszczenia ekranu wyników
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void DestroyResultsScreen();
 

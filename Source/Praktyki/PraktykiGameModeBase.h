@@ -23,6 +23,8 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaTime) override;
+
 	UFUNCTION(BlueprintCallable, Category = "Game Flow")
 	void StartGame();
 	
@@ -48,6 +50,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float BestLapTime; 
 
+	// Najlepszy czas wyścigu (suma najlepszych okrążeń lub po prostu rekord)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
+	float BestRaceTime;
+
 	// Docelowa liczba okrążeń dla bieżącej rozgrywki (ustawiana dynamicznie)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	int32 TargetLaps;
@@ -63,8 +69,8 @@ public:
 	TSubclassOf<UUserWidget> GameHUDClass;
 
 	//Wyświetlana instacja HUDu gry (czas/okrążenia)
-	UPROPERTY()
-	UUserWidget* CurrentGameHUDInstance;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	TObjectPtr<UUserWidget> CurrentGameHUDInstance;
 
 	// Klasa Blueprintu dla ekranu wyników wyścigu (np. BP_RaceResultsWidget)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
@@ -76,7 +82,7 @@ public:
 
 	// Checkpointy w obecnym okrążeniu
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoints")
-	TArray<ATrackCheckpoint*> ActiveCheckpoints;
+	TArray<ATrackCheckpoint*> TrackCheckpoints;
 
 	// Indeks następnego oczekiwanego checkpointa
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoints")
@@ -93,10 +99,6 @@ public:
 	// Tablica do przechowywania czasów wszystkich ukończonych okrążeń
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	TArray<float> CompletedLapTimes;
-
-	// Najlepszy czas wyścigu (suma najlepszych okrążeń lub po prostu rekord)
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
-	float BestRaceTime;
 
 	// Funkcja wywoływana, gdy gracz przejedzie przez checkpoint
 	UFUNCTION(BlueprintCallable, Category = "Checkpoints")

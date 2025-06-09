@@ -18,7 +18,6 @@ void APorschePlayerController::BeginPlay()
 	{
 		ShowMenu();
 	}
-
 }
 
 void APorschePlayerController::SetupInputComponent()
@@ -63,15 +62,11 @@ void APorschePlayerController::ShowMenu()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MainMenuWidget is not set in PorschePlayerController Blueprint"));
 	}
-
-	//Ukrywanie HUDu auta i wyników
-	DestroyCarHUD();
-	DestroyResultsScreen();
 }
 
 void APorschePlayerController::HideMenu()
 {
-	if (WidgetInstance && WidgetInstance->IsInViewport())	//Sprawdzamy czy instancja jest widoczna i czy istnieje
+	if (WidgetInstance)	//Sprawdzamy czy instancja jest widoczna i czy istnieje
 	{
 		WidgetInstance->RemoveFromParent();
 		WidgetInstance = nullptr;
@@ -81,21 +76,13 @@ void APorschePlayerController::HideMenu()
 	SetInputMode(FInputModeGameOnly());
 	bShowMouseCursor = false;
 
-	/*PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
-
-	check(PorscheUI);
-	PorscheUI->AddToViewport();*/
+	CreateCarHUD();
 }
 
 void APorschePlayerController::CreateCarHUD()
 {
-	if (PorscheUIClass)
+	if (PorscheUIClass && !PorscheUI) // Upewnij się, że klasa jest ustawiona i HUD nie istnieje
 	{
-		if (PorscheUI && PorscheUI->IsInViewport())
-		{
-			PorscheUI->RemoveFromParent();
-			PorscheUI = nullptr;
-		}
 		PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
 		if (PorscheUI)
 		{
@@ -104,12 +91,16 @@ void APorschePlayerController::CreateCarHUD()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to create Car HUD Widget (PorscheUI)."));
+			UE_LOG(LogTemp, Error, TEXT("Failed to create PorscheUI widget."));
 		}
 	}
-	else
+	else if (!PorscheUIClass)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PorscheUIClass is not set in BP_PorschePlayerController. Car HUD will not be displayed."));
+	}
+	else if (PorscheUI && !PorscheUI->IsInViewport())
+	{
+		PorscheUI->AddToViewport(); // Jeśli już istnieje, ale nie jest w widoku
 	}
 }
 
@@ -148,10 +139,7 @@ void APorschePlayerController::Tick(float Delta)
 	APraktykiGameModeBase* GameMode = Cast<APraktykiGameModeBase>(UGameplayStatics::GetGameMode(this));
 	if (GameMode && GameMode->CurrentGameHUDInstance)
 	{
-		// Zakładając, że BP_PorscheHUD (lub GameHUDClass) ma funkcje do aktualizacji
-		// Musisz sam stworzyć te BlueprintImplementableEvent w BP_PorscheHUD
-		// np. Cast<BP_PorscheHUD_C>(GameMode->CurrentGameHUDInstance)->UpdateLapTime(GameMode->CurrentLapTime);
-		// Cast<BP_PorscheHUD_C>(GameMode->CurrentGameHUDInstance)->UpdateLaps(GameMode->CurrentLapsCompleted, GameMode->TargetLaps);
+		//Cast<UPorscheUIClass>(GameMode->CurrentGameHUDInstance)->UpdateLapCount(GameMode->CurrentLapsCompleted, GameMode->TargetLaps);
 	}
 }
 
