@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* InputMappingContext;
 
+	// Pointer to controlled vehicle
+	TObjectPtr<APorscheCar> PorscheVehiclePawn;
+
 	/** If true, the optional steering wheel input mapping context will be registered */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	bool bUseSteeringWheelControls = false;
@@ -37,8 +40,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (EditCondition = "bUseSteeringWheelControls"))
 	UInputMappingContext* SteeringWheelInputMappingContext; 
 
-	
-
 	// Below will be UI for the car, maybe.
 	// Type of the UI to spawn
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = UI)
@@ -46,15 +47,24 @@ protected:
 
 	// Pointer to the UI widget
 	TObjectPtr<UPorscheUI> PorscheUI;
+
+	// Blueprint main menu class   
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> MainMenuWidget;
+
+	// Instancja menu głównego
+	UPROPERTY()
+	TObjectPtr<UUserWidget> WidgetInstance; // Zmieniono na TObjectPtr (dla menu)
+
+	// Instancja ekranu wyników (aby móc go zniszczyć)
+	UPROPERTY()
+	TObjectPtr<UUserWidget> CurrentResultsScreenInstance;
 	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 
 public:
-
-	// Pointer to controlled vehicle
-	TObjectPtr<APorscheCar> PorscheVehiclePawn;
 
 	// Function for showing main menu
 	UFUNCTION(BlueprintCallable, Category = "UI")
@@ -64,17 +74,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void HideMenu();
 
+	// Funkcje do zarządzania HUDem samochodu (PorscheUI)
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void CreateCarHUD();
+
+	// Funkcja do niszczenia HUDu
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void DestroyCarHUD();
+
+	// Funkcja do niszczenia ekranu wyników (NOWE)
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void DestroyResultsScreen();
+
 	virtual void Tick(float Delta) override;
 
 protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
-	// Blueprint main menu class   
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-	TSubclassOf<UUserWidget> MainMenuWidget;
-
-	// Instance of widget menu
-	UPROPERTY()
-	UUserWidget* WidgetInstance;
 };

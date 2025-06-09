@@ -7,6 +7,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
+#include "Praktyki/PraktykiGameModeBase.h"
 
 void APorschePlayerController::BeginPlay()
 {
@@ -61,11 +63,15 @@ void APorschePlayerController::ShowMenu()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MainMenuWidget is not set in PorschePlayerController Blueprint"));
 	}
+
+	//Ukrywanie HUDu auta i wyników
+	DestroyCarHUD();
+	DestroyResultsScreen();
 }
 
 void APorschePlayerController::HideMenu()
 {
-	if (WidgetInstance)
+	if (WidgetInstance && WidgetInstance->IsInViewport())	//Sprawdzamy czy instancja jest widoczna i czy istnieje
 	{
 		WidgetInstance->RemoveFromParent();
 		WidgetInstance = nullptr;
@@ -75,10 +81,56 @@ void APorschePlayerController::HideMenu()
 	SetInputMode(FInputModeGameOnly());
 	bShowMouseCursor = false;
 
-	PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
+	/*PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
 
 	check(PorscheUI);
-	PorscheUI->AddToViewport();
+	PorscheUI->AddToViewport();*/
+}
+
+void APorschePlayerController::CreateCarHUD()
+{
+	if (PorscheUIClass)
+	{
+		if (PorscheUI && PorscheUI->IsInViewport())
+		{
+			PorscheUI->RemoveFromParent();
+			PorscheUI = nullptr;
+		}
+		PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
+		if (PorscheUI)
+		{
+			PorscheUI->AddToViewport();
+			UE_LOG(LogTemp, Log, TEXT("Car HUD Widget created and added to viewport."));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to create Car HUD Widget (PorscheUI)."));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PorscheUIClass is not set in BP_PorschePlayerController. Car HUD will not be displayed."));
+	}
+}
+
+void APorschePlayerController::DestroyCarHUD()
+{
+	if (PorscheUI && PorscheUI->IsInViewport())
+	{
+		PorscheUI->RemoveFromParent();
+		PorscheUI = nullptr;
+		UE_LOG(LogTemp, Log, TEXT("Car HUD Widget destroyed."));
+	}
+}
+
+void APorschePlayerController::DestroyResultsScreen()
+{
+	if (CurrentResultsScreenInstance && CurrentResultsScreenInstance->IsInViewport())
+	{
+		CurrentResultsScreenInstance->RemoveFromParent();
+		CurrentResultsScreenInstance = nullptr;
+		UE_LOG(LogTemp, Log, TEXT("Results screen destroyed."));
+	}
 }
 
 void APorschePlayerController::Tick(float Delta)
@@ -91,6 +143,16 @@ void APorschePlayerController::Tick(float Delta)
 		PorscheUI->UpdateSpeed(PorscheVehiclePawn->GetChaosVehicleMovement()->GetForwardSpeed());
 		PorscheUI->UpdateGear(PorscheVehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
 	}
+
+	// Możesz tutaj również aktualizować GameHUD (czas/okrążenia)
+	APraktykiGameModeBase* GameMode = Cast<APraktykiGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (GameMode && GameMode->CurrentGameHUDInstance)
+	{
+		// Zakładając, że BP_PorscheHUD (lub GameHUDClass) ma funkcje do aktualizacji
+		// Musisz sam stworzyć te BlueprintImplementableEvent w BP_PorscheHUD
+		// np. Cast<BP_PorscheHUD_C>(GameMode->CurrentGameHUDInstance)->UpdateLapTime(GameMode->CurrentLapTime);
+		// Cast<BP_PorscheHUD_C>(GameMode->CurrentGameHUDInstance)->UpdateLaps(GameMode->CurrentLapsCompleted, GameMode->TargetLaps);
+	}
 }
 
 void APorschePlayerController::OnPossess(APawn* InPawn)
@@ -99,4 +161,8 @@ void APorschePlayerController::OnPossess(APawn* InPawn)
 
 	// Pointer to the controlled pawn
 	PorscheVehiclePawn = CastChecked<APorscheCar>(InPawn);
+	if (PorscheVehiclePawn)
+	{
+		UE_LOG(LogTemp, Log, TEXT("PlayerController possessed PorscheCar."));
+	}
 }

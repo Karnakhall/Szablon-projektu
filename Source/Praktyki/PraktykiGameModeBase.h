@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "PlayerController/PraktykiGameInstance.h"
+#include "Checkpoint/TrackCheckpoint.h"
 #include "PraktykiGameModeBase.generated.h"
 
 class UUserWidget;
@@ -39,6 +40,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	int32 CurrentLapsCompleted;
 
+	// Czas obecny gry
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
+	float CurrentRaceTime;
+
 	// Dla treningu/kwalifikacji
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float BestLapTime; 
@@ -50,9 +55,6 @@ public:
 	// Docelowy maksymalny czas gry dla bieżącej rozgrywki
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float TargetMaxRaceTime;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
-	float CurrentRaceTime;
 
 	/** Zmienne dla checkpointów i okrążeń */
 
@@ -74,7 +76,7 @@ public:
 
 	// Checkpointy w obecnym okrążeniu
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoints")
-	TArray<AActor*> ActiveCheckpoints;
+	TArray<ATrackCheckpoint*> ActiveCheckpoints;
 
 	// Indeks następnego oczekiwanego checkpointa
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoints")
@@ -98,7 +100,8 @@ public:
 
 	// Funkcja wywoływana, gdy gracz przejedzie przez checkpoint
 	UFUNCTION(BlueprintCallable, Category = "Checkpoints")
-	void CheckpointPassed(AActor* CheckpointActor);
+	void CheckpointPassed(ATrackCheckpoint* CheckpointActor);
+
 protected:
 	FTimerHandle GameTimerHandle;
 	void UpdateGameTimer();
