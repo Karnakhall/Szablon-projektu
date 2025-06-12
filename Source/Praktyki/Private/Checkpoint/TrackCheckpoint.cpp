@@ -12,22 +12,22 @@ ATrackCheckpoint::ATrackCheckpoint()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    // Stwórz i skonfiguruj BoxComponent
+    // Create and configure BoxComponent
     CheckpointBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CheckpointBox"));
     RootComponent = CheckpointBox;
 
-    // Ustawienie rozmiaru boxa (zmiana w Blueprintcie)
+    // Set box size (change in Blueprint)
     CheckpointBox->SetBoxExtent(FVector(500, 100, 100));
 
-    // Włączanie detekcję kolizji
+    // Enable collision detection
     CheckpointBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CheckpointBox->SetCollisionResponseToAllChannels(ECR_Ignore); // Ignoruj wszystkie kanały domyślnie
     CheckpointBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap); // Overlapuj z Pawnami (czyli Twoim samochodem)
 
-    // Generuje zdarzenia Overlap
+    // Generate Overlap events
     CheckpointBox->SetGenerateOverlapEvents(true);
 
-    // Zainicjuj zmienne
+    // Initialize variables
     CheckpointOrder = 0;
     bIsStartFinishLine = false;
 
@@ -38,7 +38,7 @@ void ATrackCheckpoint::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Funkcja OnOverlapBegin do zdarzenia Overlap
+    // OnOverlapBegin function for Overlap event
     CheckpointBox->OnComponentBeginOverlap.AddDynamic(this, &ATrackCheckpoint::OnOverlapBegin);
 }
 
@@ -50,16 +50,16 @@ void ATrackCheckpoint::Tick(float DeltaTime)
 
 void ATrackCheckpoint::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    // Sprawdzamy czy checkpoint rejestruje przejazd auta
+    // Check if the checkpoint registers the car's passage
     APorscheCar* PorscheCar = Cast<APorscheCar>(OtherActor);
     if (PorscheCar)
     {
-        // Sprawdź, czy jesteśmy w GameMode
+        // Check if we are in GameMode
         APraktykiGameModeBase* GameMode = Cast<APraktykiGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
         if (GameMode)
         {
-            // Wywołaj funkcję w GameMode, przekazując siebie (ten checkpoint)
-            GameMode->CheckpointPassed(this); // Przekazujemy 'this' - czyli referencję do ATrackCheckpoint
+            // Call a function in GameMode, passing itself (this checkpoint)
+            GameMode->CheckpointPassed(this); // We pass 'this' - meaning a reference to ATrackCheckpoint
         }
     }
 }

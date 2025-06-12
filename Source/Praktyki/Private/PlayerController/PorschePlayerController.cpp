@@ -66,7 +66,7 @@ void APorschePlayerController::ShowMenu()
 
 void APorschePlayerController::HideMenu()
 {
-	if (WidgetInstance)	//Sprawdzamy czy instancja jest widoczna i czy istnieje
+	if (WidgetInstance)	// Check if the instance is visible and if it exists
 	{
 		WidgetInstance->RemoveFromParent();
 		WidgetInstance = nullptr;
@@ -81,7 +81,7 @@ void APorschePlayerController::HideMenu()
 
 void APorschePlayerController::CreateCarHUD()
 {
-	if (PorscheUIClass && !PorscheUI) // Upewnij się, że klasa jest ustawiona i HUD nie istnieje
+	if (PorscheUIClass && !PorscheUI) // Make sure the class is set and the HUD does not exist
 	{
 		PorscheUI = CreateWidget<UPorscheUI>(this, PorscheUIClass);
 		if (PorscheUI)
@@ -100,7 +100,7 @@ void APorschePlayerController::CreateCarHUD()
 	}
 	else if (PorscheUI && !PorscheUI->IsInViewport())
 	{
-		PorscheUI->AddToViewport(); // Jeśli już istnieje, ale nie jest w widoku
+		PorscheUI->AddToViewport(); // If it already exists, but is not in view
 	}
 }
 
@@ -135,7 +135,7 @@ void APorschePlayerController::Tick(float Delta)
 		PorscheUI->UpdateGear(PorscheVehiclePawn->GetChaosVehicleMovement()->GetCurrentGear());
 	}
 
-	// Możesz tutaj również aktualizować GameHUD (czas/okrążenia)
+	// Update GameHUD (time/laps) here
 	APraktykiGameModeBase* GameMode = Cast<APraktykiGameModeBase>(UGameplayStatics::GetGameMode(this));
 	if (GameMode && GameMode->CurrentGameHUDInstance)
 	{

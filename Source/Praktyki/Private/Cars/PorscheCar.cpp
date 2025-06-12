@@ -58,7 +58,7 @@ APorscheCar::APorscheCar()
 	GetVehicleMovement()->SetUpdatedComponent(CarSkeletalMesh);
 
 	CarBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CarBody"));
-	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("SK_Porsche_911_Gt3_R1"));		//, TEXT("SK_Porsche_911_Gt3_R1")
+	CarBody->SetupAttachment(CarSkeletalMesh, TEXT("SK_Porsche_911_Gt3_R1"));	
 	CarBody->SetRelativeLocation(FVector::ZeroVector);
 	CarBody->SetRelativeRotation(FRotator::ZeroRotator);
 	CarBody->SetRelativeScale3D(FVector(1.0f));
@@ -121,11 +121,11 @@ APorscheCar::APorscheCar()
 	WingMirrorRight->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	Wiper = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wiper"));
-	Wiper->SetupAttachment(CarBody, TEXT("WiperSocket"));	// Zmienić pozycje
+	Wiper->SetupAttachment(CarBody, TEXT("WiperSocket"));	
 	Wiper->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	FrontWheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrontWheelRight")); 
-	FrontWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("suspension_front_right")); //zmienić socket i w innych kołach też
+	FrontWheelRight->SetupAttachment(CarSkeletalMesh, TEXT("suspension_front_right"));
 	FrontWheelRight->SetRelativeRotation(FRotator(0.f, 180.f, 0.f));
 	FrontWheelRight->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -215,15 +215,15 @@ APorscheCar::APorscheCar()
 	SeatNetClamps->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	PedalAcceleration = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedalAcceleration"));
-	PedalAcceleration->SetupAttachment(SeatNetClamps, TEXT("PedalAccelerationSocket"));	//zmienić pozycje
+	PedalAcceleration->SetupAttachment(SeatNetClamps, TEXT("PedalAccelerationSocket"));
 	PedalAcceleration->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	PedalBrake = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedalBrake"));
-	PedalBrake->SetupAttachment(SeatNetClamps, TEXT("PedalBrakeSocket"));	//zmienić pozycje
+	PedalBrake->SetupAttachment(SeatNetClamps, TEXT("PedalBrakeSocket"));	
 	PedalBrake->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SteeringWheel"));
-	SteeringWheel->SetupAttachment(CockpitConsole, TEXT("SteeringWheelSocket"));	//zmiewnić pozycje
+	SteeringWheel->SetupAttachment(CockpitConsole, TEXT("SteeringWheelSocket"));
 	SteeringWheel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	EngineComponents = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EngineComponents"));
@@ -283,7 +283,6 @@ APorscheCar::APorscheCar()
 	GetChaosVehicleMovement()->TransmissionSetup.ReverseGearRatios[0] = 4.04f;
 
 	// Set up the steering
-	// NOTE: Check the Blueprint asset for the Steering Curve
 	GetChaosVehicleMovement()->SteeringSetup.SteeringType = ESteeringType::Ackermann;
 	GetChaosVehicleMovement()->SteeringSetup.AngleRatio = 0.7f;
 }
@@ -314,7 +313,7 @@ void APorscheCar::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 		// Toggle camera 
 		EnhancedInputComponent->BindAction(ToggleCameraAction, ETriggerEvent::Triggered, this, &APorscheCar::ToggleCamera);
 
-		// reset the vehicle 
+		// Reset the vehicle 
 		EnhancedInputComponent->BindAction(ResetVehicleAction, ETriggerEvent::Triggered, this, &APorscheCar::ResetVehicle);
 	}
 }

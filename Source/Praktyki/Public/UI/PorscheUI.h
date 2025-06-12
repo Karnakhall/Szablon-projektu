@@ -15,25 +15,25 @@ class PRAKTYKI_API UPorscheUI : public UUserWidget
 	GENERATED_BODY()
 protected:
 
-	// Wyświetlanie prędkości w km / h lub MPH
+	// Display speed in km/h or MPH
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Vehicle)
 	bool bIsMPH = false;
 
 public:
 
-	// Zaktualizowanie wyświetlanej prędkości
+	// Update the displayed speed
 	void UpdateSpeed(float NewSpeed);
 
-	//	Zaktualizowanie wyświetlanego biegu
+	// Update the displayed gear
 	void UpdateGear(int32 NewGear);
 
 protected:
 
-	//	Zaimplementowane w Blueprintach do wyświetlania nowej prędkości
+	// Implemented in Blueprints to display the new speed
 	UFUNCTION(BlueprintImplementableEvent, Category = Vehicle)
 	void OnSpeedUpdate(float NewSpeed);
 
-	//	Zaimplementowane w Blueprintach do wyświetlania nowego biegu
+	// Implemented in Blueprints to display the new gear
 	UFUNCTION(BlueprintImplementableEvent, Category = Vehicle)
 	void OnGearUpdate(int32 NewGear);
 };

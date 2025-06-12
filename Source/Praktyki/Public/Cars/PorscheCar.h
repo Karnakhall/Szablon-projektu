@@ -61,9 +61,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	/*
-	*	Input Actions
-	*/
+	/**	Input Actions */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* SteeringAction;
 
@@ -86,13 +84,10 @@ protected:
 
 	// Which camera is active 
 	bool bCameraActive = false;
-	/*
-	*	Input Actions Ends
-	*/
 
-	/*
-	*	Handles Inputs
-	*/
+	/**	Input Actions Ends */
+
+	/**	Handles Inputs */
 	void Steering(const FInputActionValue& Value);
 
 	void Acceleration(const FInputActionValue& Value);
@@ -108,13 +103,9 @@ protected:
 	
 	void ResetVehicle(const FInputActionValue& Value);
 
-	/*
-	*	Handles Inputs Ends
-	*/
+	/**	Handles Inputs Ends */
 
-	/*
-	*	Static Mesh Components
-	*/
+	/**	Static Mesh Components */
 
 	UPROPERTY(EditAnywhere, Category = "Car|Body|Main")
 	UStaticMeshComponent* CarBody;
@@ -233,9 +224,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Car|Interior")
 	UStaticMeshComponent* EngineComponents;
 
-	/*
-	*	Static Mesh Components Ends
-	*/
+	/**	Static Mesh Components Ends */
 
 	public:
 		/** Returns the front spring arm subobject */

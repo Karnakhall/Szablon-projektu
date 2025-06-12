@@ -26,20 +26,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-    // Komponent kolizji (Sphere Collision)
+    // Collision component
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UBoxComponent* CheckpointBox;
 
-    // Funkcja wywoływana, gdy coś nakłada się na SphereComponent
+    // Function called when something overlaps the SphereComponent
     UFUNCTION()
     void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-    // Numer porządkowy checkpointa w kolejności przejazdu
-    // Ten będzie używany do sortowania i sprawdzania kolejności
+    // Checkpoint's sequential number in driving order
+    // This will be used for sorting and checking order
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Checkpoint Settings")
     int32 CheckpointOrder;
 
-    // Czy ten checkpoint jest linią startu/mety?
+    // Is this checkpoint the start/finish line?
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Checkpoint Settings")
     bool bIsStartFinishLine;
 };

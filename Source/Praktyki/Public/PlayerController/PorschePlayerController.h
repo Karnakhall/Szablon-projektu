@@ -50,7 +50,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> MainMenuWidget;
 
-	// Instancja menu głównego
+	// Main menu instance
 	UPROPERTY()
 	TObjectPtr<UUserWidget> WidgetInstance;
 	
@@ -68,19 +68,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void HideMenu();
 
-	// Funkcje do zarządzania HUDem samochodu (PorscheUI)
+	// Functions to manage the car HUD (PorscheUI)
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void CreateCarHUD();
 
-	// Funkcja do niszczenia HUDu
+	// Function to destroy the HUD
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void DestroyCarHUD();
 
-	// Instancja ekranu wyników (aby móc go zniszczyć)
+	// Results screen instance (to be able to destroy it)
 	UPROPERTY()
 	TObjectPtr<UUserWidget> CurrentResultsScreenInstance;
 
-	// Funkcja do niszczenia ekranu wyników
+	// Function to destroy the results screen
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void DestroyResultsScreen();
 

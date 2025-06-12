@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2025 Teyon. All Rights Reserved.
 
 #pragma once
 
@@ -34,75 +34,79 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Flow")
 	void ReturnToMainMenu();
 
-	/** Zmienne do przechowywania stanu rozgrywki */ 
+	/** Variables to store game state */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	ERaceMode CurrentRaceModeType;
 
-	// Liczba ukończonych okrążeń
+	// Number of completed laps
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	int32 CurrentLapsCompleted;
 
-	// Czas obecny gry
+	// Current game time
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float CurrentRaceTime;
 
-	// Dla treningu/kwalifikacji
+	// For training/qualification
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float BestLapTime; 
 
-	// Najlepszy czas wyścigu (suma najlepszych okrążeń lub po prostu rekord)
+	// Best race time (sum of best laps or just a record)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float BestRaceTime;
 
-	// Docelowa liczba okrążeń dla bieżącej rozgrywki (ustawiana dynamicznie)
+	// Target number of laps for the current game (set dynamically)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	int32 TargetLaps;
 
-	// Docelowy maksymalny czas gry dla bieżącej rozgrywki
+	// Target maximum game time for the current game
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float TargetMaxRaceTime;
 
-	/** Zmienne dla checkpointów i okrążeń */
+	/** Variables to store game state end */
+
+	/** Variables for checkpoints and laps */
 
 	// HUD blueprint
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> GameHUDClass;
 
-	//Wyświetlana instacja HUDu gry (czas/okrążenia)
+	// Displayed instance of the game HUD (time/laps)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UUserWidget> CurrentGameHUDInstance;
 
-	// Klasa Blueprintu dla ekranu wyników wyścigu (np. BP_RaceResultsWidget)
+	// Blueprint class for the race results screen
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> RaceResultsWidgetClass;
 
-	// Klasa Blueprintu dla ekranu wyników treningu (np. BP_TrainingResultsWidget)
+	// Blueprint class for the training results screen
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> TrainingResultsWidgetClass;
 
-	// Checkpointy w obecnym okrążeniu
+	// Checkpoints in the current lap
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoints")
 	TArray<ATrackCheckpoint*> TrackCheckpoints;
 
-	// Indeks następnego oczekiwanego checkpointa
+	// Index of the next expected checkpoint
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoints")
 	int32 NextCheckpointIndex;
 
-	// Czas rozpoczęcia aktualnego okrążenia
+	// Start time of the current lap
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float CurrentLapStartTime;
 
-	// Czas trwania aktualnego okrążenia
+	// Duration of the current lap
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	float CurrentLapTime;
 
-	// Tablica do przechowywania czasów wszystkich ukończonych okrążeń
+	// Array to store times of all completed laps
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game State")
 	TArray<float> CompletedLapTimes;
 
-	// Funkcja wywoływana, gdy gracz przejedzie przez checkpoint
+	// Function called when the player drives through a checkpoint
 	UFUNCTION(BlueprintCallable, Category = "Checkpoints")
 	void CheckpointPassed(ATrackCheckpoint* CheckpointActor);
+
+	/** Variables for checkpoints and laps ends */
 
 protected:
 	FTimerHandle GameTimerHandle;
@@ -110,12 +114,12 @@ protected:
 
 	void CheckGameEndConditions();
 
-	// Inicjalizacja checkpointów
+	// Initialize checkpoints
 	void InitializeCheckpoints();
 
-	// Resetowanie stanu okrążenia
+	// Reset lap state
 	void ResetLap();
 
-	// Funkcja do wyświetlania ekranu wyników
+	// Function to display the results screen
 	void DisplayResultsScreen(bool bPlayerWon);
 };

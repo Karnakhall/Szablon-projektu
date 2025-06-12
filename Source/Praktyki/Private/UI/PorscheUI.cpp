@@ -5,15 +5,15 @@
 
 void UPorscheUI::UpdateSpeed(float NewSpeed)
 {
-	// Sformatuj prędkość do km/h lub MPH
+	// Format speed to km/h or MPH
 	float FormattedSpeed = FMath::Abs(NewSpeed) * (bIsMPH ? 0.022f : 0.036f);
 
-	// Obsługa w Blueprintach
+	// Handled in Blueprints
 	OnSpeedUpdate(FormattedSpeed);
 }
 
 void UPorscheUI::UpdateGear(int32 NewGear)
 {
-	// Obsługa w Blueprintach
+	// Handled in Blueprints
 	OnGearUpdate(NewGear);
 }

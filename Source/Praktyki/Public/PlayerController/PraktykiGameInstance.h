@@ -6,7 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "PraktykiGameInstance.generated.h"
 
-// Enum do przechowywania trybów gry
+// Enum to store game modes
 UENUM(BlueprintType)
 enum class ERaceMode : uint8
 {
@@ -15,9 +15,7 @@ enum class ERaceMode : uint8
 	RM_Race	 UMETA(DisplayName = "Race")
 };
 
-/**
- *	Główna instancja gry do przechowywania parametrów rogrywki
- */
+/** Main game instance to store game parameters */
 
 UCLASS()
 class PRAKTYKI_API UPraktykiGameInstance : public UGameInstance
